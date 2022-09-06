@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "Users")
 @Data
 @NoArgsConstructor
-public class User {
+public class Users {
     @Id
     @Column
     private String email;

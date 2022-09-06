@@ -1,7 +1,7 @@
 package com.chadwick.GoBankDB.Repository;
 
-import com.chadwick.GoBankDB.Entity.User;
+import com.chadwick.GoBankDB.Entity.Users;
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserRepository extends CrudRepository<User, String> {
+public interface UserRepository extends CrudRepository<Users, String> {
 }
