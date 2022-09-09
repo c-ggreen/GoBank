@@ -5,6 +5,7 @@ import com.chadwick.GoBankDB.Service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -19,7 +20,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public Account getAccountByID(@PathVariable Long id){
+    public Account getAccountByID(@PathVariable UUID id){
         return accountService.getAccountByID(id);
     }
 
@@ -34,7 +35,7 @@ public class AccountController {
     }
 
     @DeleteMapping("/{id}")
-    public HttpStatus deleteAccount(@PathVariable Long id){
+    public HttpStatus deleteAccount(@PathVariable UUID id){
         return accountService.deleteAccount(id);
     }
 

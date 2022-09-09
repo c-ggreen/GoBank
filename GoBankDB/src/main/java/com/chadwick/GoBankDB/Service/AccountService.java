@@ -5,6 +5,7 @@ import com.chadwick.GoBankDB.Repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import java.util.UUID;
 
 @Service
 public class AccountService {
@@ -15,7 +16,7 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    public Account getAccountByID(Long id){
+    public Account getAccountByID(UUID id){
         return accountRepository.findById(id).get();
     }
 
@@ -27,7 +28,7 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    public HttpStatus deleteAccount(Long id){
+    public HttpStatus deleteAccount(UUID id){
         accountRepository.deleteById(id);
         return HttpStatus.OK;
     }

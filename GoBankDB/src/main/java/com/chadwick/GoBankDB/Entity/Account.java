@@ -2,6 +2,7 @@ package com.chadwick.GoBankDB.Entity;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 
 @Entity
@@ -10,8 +11,8 @@ import java.util.List;
 public class Account {
     @Id
     @Column
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
     @Column
     private String name;
     @Column
