@@ -20,7 +20,7 @@ public class Account {
     @Column(nullable = false)
     private String type; // Checking, Savings, Investment, Credit
     @Column(nullable = false)
-    private long balance;
+    private double balance;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private List<Transaction> transactions;

@@ -5,14 +5,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
-
 @Embeddable
 @Data
 @NoArgsConstructor
-public class Address {
-    private String street;
-    private String city;
-    private String state;
-    private int zipCode;
-    private String country;
+public class Birthdate {
+    private byte day;
+    private String month;
+    private short year;
 }

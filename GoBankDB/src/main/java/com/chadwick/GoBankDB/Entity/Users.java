@@ -1,5 +1,6 @@
 package com.chadwick.GoBankDB.Entity;
 import com.chadwick.GoBankDB.Model.Address;
+import com.chadwick.GoBankDB.Model.Birthdate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -28,16 +29,16 @@ public class Users {
     private String gender;
     @Embedded
     private Address address;
+    @Embedded
+    private Birthdate birthdate;
     @Column
-    private String birthdate;
+    private double yearlyIncome;
     @Column
-    private String yearlyIncome;
+    private double monthlyIncome;
     @Column
-    private String monthlyIncome;
-    @Column
-    private String debt;
+    private double debt;
     @Column(nullable = false)
-    private String ficoScore;
+    private short ficoScore;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Account> accounts;

@@ -19,7 +19,9 @@ public class Transaction {
     @CreationTimestamp
     private LocalDateTime transactionDate;
     @Column(nullable = false)
-    private long amount;
+    private double amount;
     @Column(nullable = false)
     private String type; // Credit or Debit
+    @Column
+    private String category; // Utilities, Food & Drink, Transportation
 }
