@@ -23,10 +23,10 @@ public class Users {
     @Column(nullable = false)
     private String lastName;
     @Column(nullable = false)
-    private int socialSecurityNumber;
+    private int socialSecurity;
     @Column
     private String gender;
-    @Column
+    @Embedded
     private Address address;
     @Column
     private String birthdate;
