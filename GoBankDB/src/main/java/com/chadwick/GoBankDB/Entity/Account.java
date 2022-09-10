@@ -10,12 +10,16 @@ import java.util.UUID;
 @Data
 public class Account {
     @Id
-    @Column
     @GeneratedValue
+    @Column(nullable = false)
     private UUID id;
-    @Column
-    private String name;
-    @Column
+    @Column(nullable = false)
+    private String defaultAccountName;
+    @Column(nullable = false)
+    private String accountNickName;
+    @Column(nullable = false)
+    private String type; // Checking, Savings, Investment, Credit
+    @Column(nullable = false)
     private long balance;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
