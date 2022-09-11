@@ -23,5 +23,5 @@ public class Transaction {
     @Column(nullable = false)
     private String type; // Credit or Debit
     @Column
-    private String category; // Utilities, Food & Drink, Transportation
+    private String category; // Utilities, Food & Drink, Transportation, etc.
 }
