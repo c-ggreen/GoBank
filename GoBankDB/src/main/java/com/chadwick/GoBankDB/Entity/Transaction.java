@@ -24,4 +24,6 @@ public class Transaction {
     private String type; // Credit or Debit
     @Column
     private String category; // Utilities, Food & Drink, Transportation, etc.
+    @Column(nullable = false)
+    private String associatedAccountId;
 }
