@@ -41,7 +41,7 @@ public class Users {
     @Column
     private double monthlyIncome;
     @Column
-    private double debt;
+    private double personalDebt;
     @Column
     private short ficoScore;
     @Column(nullable = false, updatable = false)
