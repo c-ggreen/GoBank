@@ -3,7 +3,6 @@ import com.chadwick.GoBankDB.Model.Address;
 import com.chadwick.GoBankDB.Model.Birthdate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -28,8 +27,10 @@ public class Users {
     @Column
     private String gender;
     @Embedded
+    @Column(nullable = false)
     private Address address;
     @Embedded
+    @Column(nullable = false)
     private Birthdate birthdate;
     @Column
     private double yearlyIncome;
@@ -37,7 +38,7 @@ public class Users {
     private double monthlyIncome;
     @Column
     private double debt;
-    @Column(nullable = false)
+    @Column
     private short ficoScore;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
