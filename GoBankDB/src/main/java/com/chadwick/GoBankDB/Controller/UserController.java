@@ -32,11 +32,11 @@ public class UserController {
         return userService.getUserByID(email).getAccounts();
     }
 
-    @GetMapping("/{email}/accounts/{id}")
-    public Account getUserAccountByAccountID(@PathVariable String email, @PathVariable String id) {
+    @GetMapping("/{email}/accounts/{accountId}")
+    public Account getUserAccountByAccountID(@PathVariable String email, @PathVariable String accountId) {
         List<Account> accounts = userService.getUserByID(email).getAccounts();
         for (Account account : accounts) {
-            if (account.getId().toString().equals(id)) {
+            if (account.getAccountId().toString().equals(accountId)) {
                 return account;
             }
         }

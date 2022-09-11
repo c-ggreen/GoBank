@@ -16,8 +16,8 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
-    public Account getAccountByID(UUID id){
-        return accountRepository.findById(id).get();
+    public Account getAccountByID(UUID accountId){
+        return accountRepository.findById(accountId).get();
     }
 
     public Account createAccount(Account account){
@@ -28,8 +28,8 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    public HttpStatus deleteAccount(UUID id){
-        accountRepository.deleteById(id);
+    public HttpStatus deleteAccount(UUID accountId){
+        accountRepository.deleteById(accountId);
         return HttpStatus.OK;
     }
 }

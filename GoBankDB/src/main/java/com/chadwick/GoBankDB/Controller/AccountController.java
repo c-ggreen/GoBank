@@ -19,9 +19,9 @@ public class AccountController {
         return accountService.getAccounts();
     }
 
-    @GetMapping("/{id}")
-    public Account getAccountByID(@PathVariable UUID id){
-        return accountService.getAccountByID(id);
+    @GetMapping("/{accountId}")
+    public Account getAccountByID(@PathVariable UUID accountId){
+        return accountService.getAccountByID(accountId);
     }
 
     @PostMapping
@@ -34,9 +34,9 @@ public class AccountController {
         return accountService.updateAccount(account);
     }
 
-    @DeleteMapping("/{id}")
-    public HttpStatus deleteAccount(@PathVariable UUID id){
-        return accountService.deleteAccount(id);
+    @DeleteMapping("/{accountId}")
+    public HttpStatus deleteAccount(@PathVariable UUID accountId){
+        return accountService.deleteAccount(accountId);
     }
 
 }

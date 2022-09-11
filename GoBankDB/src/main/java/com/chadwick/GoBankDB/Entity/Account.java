@@ -12,7 +12,7 @@ public class Account {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    private UUID id;
+    private UUID accountId;
     @Column(nullable = false)
     private String defaultAccountName;
     @Column(nullable = false)
