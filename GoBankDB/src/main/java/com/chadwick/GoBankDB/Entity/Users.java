@@ -3,7 +3,11 @@ import com.chadwick.GoBankDB.Model.Address;
 import com.chadwick.GoBankDB.Model.Birthdate;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -40,6 +44,9 @@ public class Users {
     private double debt;
     @Column
     private short ficoScore;
+    @Column(nullable = false, updatable = false)
+    @CreationTimestamp
+    private LocalDate joinDate;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Account> accounts;
