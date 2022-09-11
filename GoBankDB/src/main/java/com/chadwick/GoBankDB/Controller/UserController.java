@@ -1,6 +1,7 @@
 package com.chadwick.GoBankDB.Controller;
 
 import com.chadwick.GoBankDB.Entity.Account;
+import com.chadwick.GoBankDB.Entity.Transaction;
 import com.chadwick.GoBankDB.Entity.Users;
 import com.chadwick.GoBankDB.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,18 +30,22 @@ public class UserController {
 
     @GetMapping("/{email}/accounts")
     public List<Account> getUserAccounts(@PathVariable String email) {
-        return userService.getUserByID(email).getAccounts();
+        return userService.getUserAccounts(email);
     }
 
     @GetMapping("/{email}/accounts/{accountId}")
     public Account getUserAccountByAccountID(@PathVariable String email, @PathVariable String accountId) {
-        List<Account> accounts = userService.getUserByID(email).getAccounts();
-        for (Account account : accounts) {
-            if (account.getAccountId().toString().equals(accountId)) {
-                return account;
-            }
-        }
-        throw new Error("Account not found.");
+        return userService.getUserAccountByAccountID(email, accountId);
+    }
+
+    @GetMapping("/{email}/accounts/{accountId}/transactions")
+    public List<Transaction> getAllTransactionsInUserAccount(@PathVariable String email, @PathVariable String accountId){
+        return userService.getAllTransactionsInUserAccount(email, accountId);
+    }
+
+    @GetMapping("/{email}/accounts/{accountId}/transactions/{transactionId}")
+    public Transaction getTransactionInUserAccountByID(@PathVariable String email, @PathVariable String accountId, @PathVariable Long transactionId){
+        return userService.getTransactionsInUserAccountByID(email, accountId, transactionId);
     }
 
     @PostMapping
