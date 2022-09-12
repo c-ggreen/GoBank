@@ -19,7 +19,7 @@ public class Address {
     @Column(nullable = false)
     private String state;
     @Column(nullable = false)
-    private int zipCode;
+    private String zipCode;
     @Column(nullable = false)
     private String country;
 }

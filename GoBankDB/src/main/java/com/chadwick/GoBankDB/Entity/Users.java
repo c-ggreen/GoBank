@@ -27,7 +27,7 @@ public class Users {
     @Column(nullable = false)
     private String lastName;
     @Column(nullable = false)
-    private int socialSecurity;
+    private String socialSecurity;
     @Column
     private String gender;
     @Embedded
@@ -37,13 +37,13 @@ public class Users {
     @Column(nullable = false)
     private Birthdate birthdate;
     @Column
-    private double yearlyIncome;
+    private String yearlyIncome;
     @Column
-    private double monthlyIncome;
+    private String monthlyIncome;
     @Column
-    private double personalDebt;
+    private String personalDebt;
     @Column
-    private short ficoScore;
+    private String ficoScore;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDate joinDate;

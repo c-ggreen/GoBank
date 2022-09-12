@@ -27,7 +27,7 @@ public class Account {
     @Column(nullable = false)
     private String type; // Checking, Savings, Investment, Credit
     @Column(nullable = false)
-    private double balance;
+    private String balance;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDate creationDate;

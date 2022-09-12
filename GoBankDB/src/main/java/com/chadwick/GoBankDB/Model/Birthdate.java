@@ -11,9 +11,9 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 public class Birthdate {
     @Column(nullable = false)
-    private byte day;
+    private String day;
     @Column(nullable = false)
     private String month;
     @Column(nullable = false)
-    private short year;
+    private String year;
 }

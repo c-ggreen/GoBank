@@ -37,7 +37,7 @@ public class UserService {
     }
 
     public List<Transaction> getAllTransactionsInUserAccount(String email, String accountId){
-        List<Transaction> transactions = new ArrayList<>();
+        List<Transaction> transactions;
         List<Account> accounts = userRepository.findById(email).get().getAccounts();
         for (Account account : accounts) {
             if (account.getAccountId().toString().equals(accountId)) {
