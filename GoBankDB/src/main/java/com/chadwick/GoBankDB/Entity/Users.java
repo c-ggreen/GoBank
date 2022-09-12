@@ -1,13 +1,14 @@
 package com.chadwick.GoBankDB.Entity;
 import com.chadwick.GoBankDB.Model.Address;
 import com.chadwick.GoBankDB.Model.Birthdate;
+import com.chadwick.GoBankDB.Model.Recipient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -47,6 +48,9 @@ public class Users {
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDate joinDate;
+    @Column
+    @ElementCollection
+    private List<Recipient> recipientList;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Account> accounts;
