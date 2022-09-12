@@ -7,7 +7,6 @@ import com.chadwick.GoBankDB.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,7 +26,7 @@ public class UserService {
         return userRepository.findById(email).get().getAccounts();
     }
     public Account getUserAccountByAccountID(String email, String accountId) {
-        List<Account> accounts = userRepository.findById(email).get().getAccounts();
+        List<Account> accounts = getUserAccounts(email);
         for (Account account : accounts) {
             if (account.getAccountId().toString().equals(accountId)) {
                 return account;
@@ -49,14 +48,7 @@ public class UserService {
     }
 
     public Transaction getTransactionsInUserAccountByID(String email, String accountId, Long transactionId){
-        List<Transaction> transactions = new ArrayList<>();
-        List<Account> accounts = userRepository.findById(email).get().getAccounts();
-        for (Account account : accounts) {
-            if (account.getAccountId().toString().equals(accountId)) {
-                transactions = account.getTransactions();
-                break;
-            }
-        }
+        List<Transaction> transactions = getAllTransactionsInUserAccount(email, accountId);
         for (Transaction transaction : transactions){
             if(transaction.getId().equals(transactionId)){
                 return transaction;
