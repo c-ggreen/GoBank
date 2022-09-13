@@ -61,6 +61,10 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public Iterable<Users> createMultipleUsers(List<Users> users){
+        return userRepository.saveAll(users);
+    }
+
     public Users updateUser(Users user){
         return userRepository.save(user);
     }

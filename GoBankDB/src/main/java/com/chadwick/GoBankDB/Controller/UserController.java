@@ -53,6 +53,11 @@ public class UserController {
         return userService.createUser(user);
     }
 
+    @PostMapping("/multiple")
+    public Iterable<Users> createMultipleUsers(@RequestBody List<Users> usersList){
+        return userService.createMultipleUsers(usersList);
+    }
+
     @PatchMapping
     public Users updateUser(@RequestBody Users user) {
         return userService.updateUser(user);
