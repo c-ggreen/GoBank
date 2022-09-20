@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "Users")
 @Data
-@NoArgsConstructor
+//@NoArgsConstructor
 public class Users {
     @Id
     @Column(nullable = false)
@@ -54,4 +54,25 @@ public class Users {
     private List<Account> accounts;
 
 
+    public Users(String email, String password, String firstName, String middleName, String lastName, String socialSecurity, String gender, Address address, Birthdate birthdate, String yearlyIncome, String monthlyIncome, String personalDebt, String ficoScore, LocalDate joinDate, List<Recipient> recipientList, List<Account> accounts) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.socialSecurity = socialSecurity;
+        this.gender = gender;
+        this.address = address;
+        this.birthdate = birthdate;
+        this.yearlyIncome = yearlyIncome;
+        this.monthlyIncome = monthlyIncome;
+        this.personalDebt = personalDebt;
+        this.ficoScore = ficoScore;
+        this.joinDate = joinDate;
+        this.recipientList = recipientList;
+        this.accounts = accounts;
+    }
+
+    public Users() {
+    }
 }
