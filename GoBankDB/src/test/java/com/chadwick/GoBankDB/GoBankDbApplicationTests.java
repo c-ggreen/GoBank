@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.stream.StreamSupport;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -37,10 +39,12 @@ class GoBankDbApplicationTests {
 		}
 	}
 	@Test
-	void itShouldCheckThatAll100UsersWereSaved(){
+	void itShouldCheckThatAll10UsersWereSaved(){
 		try {
 			Iterable<Users> usersIterable = userRepository.findAll();
-			assertThat(StreamSupport.stream(usersIterable.spliterator(), false).count()).isEqualTo(100);
+			ArrayList<Users> usersArrayList = new ArrayList<>((Collection) usersIterable);
+			assertThat(usersArrayList.size()).isEqualTo(10);
+			assertThat(usersArrayList.get(0).getEmail()).isNotNull();
 		}catch (Exception e){
 			throw new Error(e);
 		}
