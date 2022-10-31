@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "Users")
@@ -15,6 +16,9 @@ import java.util.List;
 //@NoArgsConstructor
 public class Users {
     @Id
+    @GeneratedValue
+    @Column(nullable = false)
+    private UUID userId;
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)

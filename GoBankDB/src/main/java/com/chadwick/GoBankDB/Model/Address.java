@@ -13,6 +13,7 @@ import javax.persistence.Embeddable;
 public class Address {
     @Column(nullable = false)
     private String street;
+    @Column
     private String unit;
     @Column(nullable = false)
     private String city;

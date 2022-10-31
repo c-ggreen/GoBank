@@ -19,7 +19,7 @@ public class Account {
     @Column(nullable = false)
     private String accountOwnerName; // Should be sourced from Users name fields
     @Column(nullable = false)
-    private String accountOwnerEmailId;
+    private String accountOwnerEmail;
     @Column(nullable = false)
     private String defaultAccountName;
     @Column(nullable = false)

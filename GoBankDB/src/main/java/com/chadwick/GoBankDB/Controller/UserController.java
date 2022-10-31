@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/v1/users")
 public class UserController {
     @Autowired
     UserService userService;
@@ -23,29 +23,29 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @GetMapping("/{email}")
-    public Users getUserByID(@PathVariable String email) {
-        return userService.getUserByID(email);
+    @GetMapping("/{id}")
+    public Users getUserByID(@PathVariable UUID id) {
+        return userService.getUserByID(id);
     }
 
-    @GetMapping("/{email}/accounts")
-    public List<Account> getUserAccounts(@PathVariable String email) {
-        return userService.getUserAccounts(email);
+    @GetMapping("/{id}/accounts")
+    public List<Account> getUserAccounts(@PathVariable UUID id) {
+        return userService.getUserAccounts(id);
     }
 
-    @GetMapping("/{email}/accounts/{accountId}")
-    public Account getUserAccountByAccountID(@PathVariable String email, @PathVariable String accountId) {
-        return userService.getUserAccountByAccountID(email, accountId);
+    @GetMapping("/{id}/accounts/{accountId}")
+    public Account getUserAccountByAccountID(@PathVariable UUID id, @PathVariable String accountId) {
+        return userService.getUserAccountByAccountID(id, accountId);
     }
 
-    @GetMapping("/{email}/accounts/{accountId}/transactions")
-    public List<Transaction> getAllTransactionsInUserAccount(@PathVariable String email, @PathVariable String accountId){
-        return userService.getAllTransactionsInUserAccount(email, accountId);
+    @GetMapping("/{id}/accounts/{accountId}/transactions")
+    public List<Transaction> getAllTransactionsInUserAccount(@PathVariable UUID id, @PathVariable String accountId){
+        return userService.getAllTransactionsInUserAccount(id, accountId);
     }
 
-    @GetMapping("/{email}/accounts/{accountId}/transactions/{transactionId}")
-    public Transaction getTransactionInUserAccountByID(@PathVariable String email, @PathVariable String accountId, @PathVariable Long transactionId){
-        return userService.getTransactionsInUserAccountByID(email, accountId, transactionId);
+    @GetMapping("/{id}/accounts/{accountId}/transactions/{transactionId}")
+    public Transaction getTransactionInUserAccountByID(@PathVariable UUID id, @PathVariable String accountId, @PathVariable Long transactionId){
+        return userService.getTransactionsInUserAccountByID(id, accountId, transactionId);
     }
 
     @PostMapping
@@ -53,18 +53,20 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    @PostMapping("/multiple")
-    public Iterable<Users> createMultipleUsers(@RequestBody List<Users> usersList){
-        return userService.createMultipleUsers(usersList);
+    // need to fix related method in service class
+//    @PostMapping("/multiple")
+//    public Iterable<Users> createMultipleUsers(@RequestBody List<Users> usersList){
+//        return userService.createMultipleUsers(usersList);
+//    }
+
+
+    @PatchMapping("/update/{id}")
+    public Users updateUser(@PathVariable UUID id, @RequestBody Users updates) {
+        return userService.updateUser(id, updates);
     }
 
-    @PatchMapping
-    public Users updateUser(@RequestBody Users user) {
-        return userService.updateUser(user);
-    }
-
-    @DeleteMapping("/{email}")
-    public HttpStatus deleteUser(@PathVariable String email) {
-        return userService.deleteUser(email);
+    @DeleteMapping("/{id}")
+    public HttpStatus deleteUser(@PathVariable UUID id) {
+        return userService.deleteUser(id);
     }
 }
