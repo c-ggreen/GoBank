@@ -27,7 +27,11 @@ public class UserService {
     }
 
     public Users getUserByID(UUID id) {
-        return userRepository.findById(id).get();
+        try{
+            return userRepository.findById(id).get();
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+        }
     }
 
     public List<Account> getUserAccounts(UUID id) {
@@ -35,35 +39,58 @@ public class UserService {
     }
 
     public Account getUserAccountByAccountID(UUID id, String accountId) {
-        List<Account> accounts = getUserAccounts(id);
-        for (Account account : accounts) {
-            if (account.getAccountId().toString().equals(accountId)) {
-                return account;
+        try{
+            List<Account> accounts = getUserAccounts(id);
+            Account target = null;
+            for (Account account : accounts) {
+                if (account.getAccountId().toString().equals(accountId)) {
+                    target = account;
+                    break;
+                }
+                else {
+                    throw new Exception("Account not found.");
+                }
             }
+            return target;
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, null, e);
         }
-        throw new Error("Account not found.");
     }
 
     public List<Transaction> getAllTransactionsInUserAccount(UUID id, String accountId) {
-        List<Transaction> transactions;
-        List<Account> accounts = userRepository.findById(id).get().getAccounts();
-        for (Account account : accounts) {
-            if (account.getAccountId().toString().equals(accountId)) {
-                transactions = account.getTransactions();
-                return transactions;
+        try{
+            List<Transaction> transactions = null;
+            List<Account> accounts = userRepository.findById(id).get().getAccounts();
+            for (Account account : accounts) {
+                if (account.getAccountId().toString().equals(accountId)) {
+                    transactions = account.getTransactions();
+                }
+                else {
+                    throw new Exception("Error retrieving transaction list");
+                }
             }
+            return transactions;
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, null, e);
         }
-        throw new Error("Error retrieving transaction list");
     }
 
     public Transaction getTransactionsInUserAccountByID(UUID id, String accountId, Long transactionId) {
-        List<Transaction> transactions = getAllTransactionsInUserAccount(id, accountId);
-        for (Transaction transaction : transactions) {
-            if (transaction.getId().equals(transactionId)) {
-                return transaction;
+        try{
+            List<Transaction> transactions = getAllTransactionsInUserAccount(id, accountId);
+            Transaction target = null;
+            for (Transaction transaction : transactions) {
+                if (transaction.getId().equals(transactionId)) {
+                    target = transaction;
+                }
+                else {
+                    throw new Exception("Error retrieving transaction");
+                }
             }
+            return target;
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, null, e);
         }
-        throw new Error("Error retrieving transaction");
     }
 
     public Users createUser(Users user) {
@@ -109,87 +136,93 @@ public class UserService {
 
 
     public Users updateUser(UUID id, Users updates){
-        Users user = getUserByID(id);
-        if(updates.getEmail() != null){
-            user.setEmail(updates.getEmail());
-            // Will update account owner email if the user updates their email
+        try{
+            Users user = getUserByID(id);
+            if(updates.getEmail() != null){
+                user.setEmail(updates.getEmail());
+                // Will update account owner email if the user updates their email
+                for (Account item: user.getAccounts()) {
+                    item.setAccountOwnerEmail(user.getEmail());
+                }
+            }
+            if(updates.getPassword() != null){
+                user.setPassword(updates.getPassword());
+            }
+            if(updates.getFirstName() != null){
+                user.setFirstName(updates.getFirstName());
+            }
+            if(updates.getMiddleName() != null){
+                user.setMiddleName(updates.getMiddleName());
+            }
+            if(updates.getLastName() != null){
+                user.setLastName(updates.getLastName());
+            }
+            // Will update account owner name if the user updates their name
             for (Account item: user.getAccounts()) {
-                item.setAccountOwnerEmail(user.getEmail());
+                item.setAccountOwnerName(user.getFirstName() + " " + user.getMiddleName() + " " + user.getLastName());
             }
-        }
-        if(updates.getPassword() != null){
-            user.setPassword(updates.getPassword());
-        }
-        if(updates.getFirstName() != null){
-            user.setFirstName(updates.getFirstName());
-        }
-        if(updates.getMiddleName() != null){
-            user.setMiddleName(updates.getMiddleName());
-        }
-        if(updates.getLastName() != null){
-            user.setLastName(updates.getLastName());
-        }
-        // Will update account owner name if the user updates their name
-        for (Account item: user.getAccounts()) {
-            item.setAccountOwnerName(user.getFirstName() + " " + user.getMiddleName() + " " + user.getLastName());
-        }
 
-        if(updates.getGender() != null){
-            user.setGender(updates.getGender());
+            if(updates.getGender() != null){
+                user.setGender(updates.getGender());
+            }
+            // to update address
+            if(updates.getAddress() != null){
+                Address update = updates.getAddress();
+                Address address = user.getAddress();
+                if(update.getStreet() != null){
+                    address.setStreet(update.getStreet());
+                }
+                if(update.getUnit() != null){
+                    address.setUnit(update.getUnit());
+                }
+                if(update.getCity() != null){
+                    address.setCity(update.getCity());
+                }
+                if(update.getState() != null){
+                    address.setState(update.getState());
+                }
+                if(update.getZipCode() != null){
+                    address.setZipCode(update.getZipCode());
+                }
+                if(update.getCountry() != null){
+                    address.setCountry(update.getCountry());
+                }
+            }
+            // to update birthday
+            if(updates.getBirthdate() != null){
+                Birthdate update = updates.getBirthdate();
+                Birthdate birthdate = user.getBirthdate();
+                if(update.getDay() != null){
+                    birthdate.setDay(update.getDay());
+                }
+                if(update.getMonth() != null){
+                    birthdate.setMonth(update.getMonth());
+                }
+                if(update.getYear() != null){
+                    birthdate.setYear(update.getYear());
+                }
+            }
+            if(updates.getYearlyIncome() != null){
+                user.setYearlyIncome(updates.getYearlyIncome());
+            }
+            if(updates.getMonthlyIncome() != null){
+                user.setMonthlyIncome(updates.getMonthlyIncome());
+            }
+            if(updates.getPersonalDebt() != null){
+                user.setPersonalDebt(updates.getPersonalDebt());
+            }
+            return userRepository.save(user);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, null, e);
         }
-        // to update address
-        if(updates.getAddress() != null){
-            Address update = updates.getAddress();
-            Address address = user.getAddress();
-            if(update.getStreet() != null){
-                address.setStreet(update.getStreet());
-            }
-            if(update.getUnit() != null){
-                address.setUnit(update.getUnit());
-            }
-            if(update.getCity() != null){
-                address.setCity(update.getCity());
-            }
-            if(update.getState() != null){
-                address.setState(update.getState());
-            }
-            if(update.getZipCode() != null){
-                address.setZipCode(update.getZipCode());
-            }
-            if(update.getCountry() != null){
-                address.setCountry(update.getCountry());
-            }
-        }
-        // to update birthday
-        if(updates.getBirthdate() != null){
-            Birthdate update = updates.getBirthdate();
-            Birthdate birthdate = user.getBirthdate();
-            if(update.getDay() != null){
-                birthdate.setDay(update.getDay());
-            }
-            if(update.getMonth() != null){
-                birthdate.setMonth(update.getMonth());
-            }
-            if(update.getYear() != null){
-                birthdate.setYear(update.getYear());
-            }
-        }
-        if(updates.getYearlyIncome() != null){
-            user.setYearlyIncome(updates.getYearlyIncome());
-        }
-        if(updates.getMonthlyIncome() != null){
-            user.setMonthlyIncome(updates.getMonthlyIncome());
-        }
-        if(updates.getPersonalDebt() != null){
-            user.setPersonalDebt(updates.getPersonalDebt());
-        }
-
-
-        return userRepository.save(user);
     }
 
     public HttpStatus deleteUser(UUID id) {
-        userRepository.deleteById(id);
-        return HttpStatus.OK;
+        try{
+            userRepository.deleteById(id);
+            return new ResponseStatusException(HttpStatus.OK).getStatus();
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.", e);
+        }
     }
 }
