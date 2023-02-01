@@ -1,5 +1,5 @@
-package com.chadwick.GoBankDB.Entity;
-import com.chadwick.GoBankDB.Model.Name;
+package com.chadwick.GoBankDB.entity;
+import com.chadwick.GoBankDB.model.Name;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 

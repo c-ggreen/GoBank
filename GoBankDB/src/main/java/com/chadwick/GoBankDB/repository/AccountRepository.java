@@ -1,6 +1,6 @@
-package com.chadwick.GoBankDB.Repository;
+package com.chadwick.GoBankDB.repository;
 
-import com.chadwick.GoBankDB.Entity.Account;
+import com.chadwick.GoBankDB.entity.Account;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.UUID;

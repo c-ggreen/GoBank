@@ -1,8 +1,8 @@
 package com.chadwick.GoBankDB.unit.Service;
 
-import com.chadwick.GoBankDB.Repository.AccountRepository;
-import com.chadwick.GoBankDB.Repository.UserRepository;
-import com.chadwick.GoBankDB.Service.UserService;
+import com.chadwick.GoBankDB.repository.AccountRepository;
+import com.chadwick.GoBankDB.repository.UserRepository;
+import com.chadwick.GoBankDB.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)

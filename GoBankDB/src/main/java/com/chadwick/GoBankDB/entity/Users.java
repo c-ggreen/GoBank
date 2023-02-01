@@ -1,11 +1,10 @@
-package com.chadwick.GoBankDB.Entity;
+package com.chadwick.GoBankDB.entity;
 
-import com.chadwick.GoBankDB.Model.Address;
-import com.chadwick.GoBankDB.Model.Birthdate;
-import com.chadwick.GoBankDB.Model.Name;
-import com.chadwick.GoBankDB.Model.Recipient;
+import com.chadwick.GoBankDB.model.Address;
+import com.chadwick.GoBankDB.model.Birthdate;
+import com.chadwick.GoBankDB.model.Name;
+import com.chadwick.GoBankDB.model.Recipient;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;

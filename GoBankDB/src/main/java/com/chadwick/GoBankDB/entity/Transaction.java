@@ -1,4 +1,4 @@
-package com.chadwick.GoBankDB.Entity;
+package com.chadwick.GoBankDB.entity;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;

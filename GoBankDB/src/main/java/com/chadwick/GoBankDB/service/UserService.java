@@ -1,16 +1,15 @@
-package com.chadwick.GoBankDB.Service;
+package com.chadwick.GoBankDB.service;
 
-import com.chadwick.GoBankDB.Entity.Account;
-import com.chadwick.GoBankDB.Entity.Users;
-import com.chadwick.GoBankDB.Model.Address;
-import com.chadwick.GoBankDB.Model.Birthdate;
-import com.chadwick.GoBankDB.Model.Name;
-import com.chadwick.GoBankDB.Repository.AccountRepository;
-import com.chadwick.GoBankDB.Repository.UserRepository;
+import com.chadwick.GoBankDB.entity.Account;
+import com.chadwick.GoBankDB.entity.Users;
+import com.chadwick.GoBankDB.model.Address;
+import com.chadwick.GoBankDB.model.Birthdate;
+import com.chadwick.GoBankDB.model.Name;
+import com.chadwick.GoBankDB.repository.AccountRepository;
+import com.chadwick.GoBankDB.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 

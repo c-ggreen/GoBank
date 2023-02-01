@@ -1,12 +1,11 @@
 package com.chadwick.GoBankDB.unit.Repository;
 
-import com.chadwick.GoBankDB.Entity.Users;
-import com.chadwick.GoBankDB.Repository.UserRepository;
+import com.chadwick.GoBankDB.entity.Users;
+import com.chadwick.GoBankDB.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 @DataJpaTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UserRepositoryTest {

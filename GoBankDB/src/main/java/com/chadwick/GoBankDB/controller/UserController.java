@@ -1,9 +1,7 @@
-package com.chadwick.GoBankDB.Controller;
+package com.chadwick.GoBankDB.controller;
 
-import com.chadwick.GoBankDB.Entity.Account;
-import com.chadwick.GoBankDB.Entity.Transaction;
-import com.chadwick.GoBankDB.Entity.Users;
-import com.chadwick.GoBankDB.Service.UserService;
+import com.chadwick.GoBankDB.entity.Users;
+import com.chadwick.GoBankDB.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

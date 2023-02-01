@@ -1,4 +1,4 @@
-package com.chadwick.GoBankDB.Model;
+package com.chadwick.GoBankDB.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

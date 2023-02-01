@@ -1,6 +1,6 @@
-package com.chadwick.GoBankDB.Repository;
+package com.chadwick.GoBankDB.repository;
 
-import com.chadwick.GoBankDB.Entity.Users;
+import com.chadwick.GoBankDB.entity.Users;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
