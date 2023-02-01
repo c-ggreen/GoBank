@@ -1,20 +1,19 @@
 package com.chadwick.GoBankDB.Model;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
-
 
 @Embeddable
 @Data
 @NoArgsConstructor
-public class Recipient {
+public class Name {
     @Column(nullable = false)
-    private String recipientEmailId;
-    @Embedded
+    private String first;
     @Column(nullable = false)
-    private Name recipientName;
+    private String middle;
     @Column(nullable = false)
-    private String recipientAccountId;
+    private String last;
 }

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class TransactionService {
     @Autowired
@@ -15,7 +17,7 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-    public Transaction getTransactionByID(Long id){
+    public Transaction getTransactionByID(UUID id){
         return transactionRepository.findById(id).get();
     }
 
@@ -27,7 +29,7 @@ public class TransactionService {
         return transactionRepository.save(transaction);
     }
 
-    public HttpStatus deleteTransaction(Long id){
+    public HttpStatus deleteTransaction(UUID id){
         transactionRepository.deleteById(id);
         return HttpStatus.OK;
     }

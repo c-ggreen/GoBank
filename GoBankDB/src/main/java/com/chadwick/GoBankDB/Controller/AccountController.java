@@ -29,9 +29,9 @@ public class AccountController {
         return accountService.createAccount(account);
     }
 
-    @PatchMapping
-    public Account updateAccount(@RequestBody Account account){
-        return accountService.updateAccount(account);
+    @PatchMapping("update/{id}")
+    public Account updateAccount(@PathVariable UUID id, @RequestBody Account updates){
+        return accountService.updateAccount(id, updates);
     }
 
     @DeleteMapping("/{accountId}")

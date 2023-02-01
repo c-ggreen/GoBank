@@ -24,9 +24,9 @@ function LandingPage(props) {
   };
 
   const login = () => {
-    UserServices.getUserById(email)
+    UserServices.getUserByEmail(email)
       .then((res) => {
-        console.log(res.data);
+        console.log("Data: " + JSON.stringify(res));
         if (res.data.password === password) {
           navigate(`/homepage`);
           console.log("Navigate to homepage is working...");

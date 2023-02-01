@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/transaction")
@@ -19,7 +21,7 @@ public class TransactionController {
     }
 
     @GetMapping("/{id}")
-    public Transaction getTransactionByID(@PathVariable Long id){
+    public Transaction getTransactionByID(@PathVariable UUID id){
         return transactionService.getTransactionByID(id);
     }
 
@@ -34,7 +36,7 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    public HttpStatus deleteTransaction(@PathVariable Long id){
+    public HttpStatus deleteTransaction(@PathVariable UUID id){
         return transactionService.deleteTransaction(id);
     }
 }

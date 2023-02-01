@@ -3,6 +3,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 
 @Entity
@@ -11,8 +12,8 @@ import java.time.LocalDateTime;
 public class Transaction {
     @Id
     @Column(nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue
+    private UUID id;
     @Column(nullable = false)
     private String description;
     @Column(nullable = false, updatable = false)

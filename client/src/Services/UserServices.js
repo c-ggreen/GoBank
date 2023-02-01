@@ -1,13 +1,13 @@
 import axios from 'axios'
 
-const URL = "http://localhost:8080/user/"
+const URL = "http://localhost:8080/v1/user/"
 
 class UserService{
     getAllUsers = () =>{
         return axios.get(URL)
     }
-    getUserById = (email) =>{
-        return axios.get(URL + email)
+    getUserByEmail = (email) =>{
+        return axios.get(URL + 'email/' + email)
     }
     postUser = (user) =>{
         return axios.post(URL, user)

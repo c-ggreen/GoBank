@@ -14,7 +14,7 @@ function HomePage(props) {
   const [user, setUser] = useState();
 
   const fetchData = () => {
-    UserServices.getUserById(email).then((res) => {
+    UserServices.getUserByEmail(email).then((res) => {
       const data = res.data;
       console.log(data);
       setUser(data);

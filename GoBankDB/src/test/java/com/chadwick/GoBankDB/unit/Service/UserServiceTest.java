@@ -1,8 +1,8 @@
 package com.chadwick.GoBankDB.unit.Service;
 
+import com.chadwick.GoBankDB.Repository.AccountRepository;
 import com.chadwick.GoBankDB.Repository.UserRepository;
 import com.chadwick.GoBankDB.Service.UserService;
-import org.h2.engine.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -17,11 +17,13 @@ import static org.mockito.Mockito.verify;
 class UserServiceTest {
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private AccountRepository accountRepository;
     private UserService userService;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository);
+        userService = new UserService(userRepository, accountRepository);
     }
 
     @Test

@@ -1,4 +1,5 @@
 package com.chadwick.GoBankDB.Entity;
+import com.chadwick.GoBankDB.Model.Name;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -17,7 +18,10 @@ public class Account {
     @Column(nullable = false)
     private UUID accountId;
     @Column(nullable = false)
-    private String accountOwnerName; // Should be sourced from Users name fields
+    private UUID accountOwnerId;
+    @Embedded
+    @Column(nullable = false)
+    private Name accountOwnerName; // Should be sourced from Users name fields
     @Column(nullable = false)
     private String accountOwnerEmail;
     @Column(nullable = false)

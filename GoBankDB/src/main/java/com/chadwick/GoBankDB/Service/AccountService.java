@@ -1,10 +1,13 @@
 package com.chadwick.GoBankDB.Service;
 
 import com.chadwick.GoBankDB.Entity.Account;
+import com.chadwick.GoBankDB.Model.Name;
 import com.chadwick.GoBankDB.Repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.UUID;
 
 @Service
@@ -24,8 +27,40 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    public Account updateAccount(Account account){
-        return accountRepository.save(account);
+    public Account updateAccount(UUID id, Account updates){
+        try{
+            Account account = accountRepository.findById(id).get();
+
+            if(updates.getAccountOwnerName() != null){
+                Name update = updates.getAccountOwnerName();
+                Name name = account.getAccountOwnerName();
+                if(update.getFirst() != null){
+                    name.setFirst(update.getFirst());
+                }
+                if(update.getMiddle() != null){
+                    name.setMiddle(update.getMiddle());
+                }
+                if(update.getLast() != null){
+                    name.setLast(update.getLast());
+                }
+            }
+            if(updates.getAccountOwnerEmail() != null){
+                account.setAccountOwnerEmail(updates.getAccountOwnerEmail());
+            }
+            if(updates.getAccountNickName() != null){
+                account.setAccountNickName(updates.getAccountNickName());
+            }
+            if(updates.getBalance() != null){
+                account.setBalance(updates.getBalance());
+            }
+            if(updates.getTransactions() != null){
+                account.setTransactions(updates.getTransactions());
+            }
+
+            return accountRepository.save(account);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, null, e);
+        }
     }
 
     public HttpStatus deleteAccount(UUID accountId){

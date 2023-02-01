@@ -1,10 +1,13 @@
 package com.chadwick.GoBankDB.Entity;
+
 import com.chadwick.GoBankDB.Model.Address;
 import com.chadwick.GoBankDB.Model.Birthdate;
+import com.chadwick.GoBankDB.Model.Name;
 import com.chadwick.GoBankDB.Model.Recipient;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,12 +26,9 @@ public class Users {
     private String email;
     @Column(nullable = false)
     private String password;
+    @Embedded
     @Column(nullable = false)
-    private String firstName;
-    @Column
-    private String middleName;
-    @Column(nullable = false)
-    private String lastName;
+    private Name name;
     @Column(nullable = false)
     private String socialSecurity;
     @Column
@@ -53,17 +53,36 @@ public class Users {
     @Column
     @ElementCollection
     private List<Recipient> recipientList;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private List<Account> accounts;
+
+    @Column
+    @ElementCollection
+    private List<UUID> accountIDs;
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    private List<Account> accounts;
 
 
-    public Users(String email, String password, String firstName, String middleName, String lastName, String socialSecurity, String gender, Address address, Birthdate birthdate, String yearlyIncome, String monthlyIncome, String personalDebt, String ficoScore, LocalDate joinDate, List<Recipient> recipientList, List<Account> accounts) {
+    public Users(
+            String email,
+            String password,
+            Name name,
+            String socialSecurity,
+            String gender,
+            Address address,
+            Birthdate birthdate,
+            String yearlyIncome,
+            String monthlyIncome,
+            String personalDebt,
+            String ficoScore,
+            LocalDate joinDate,
+            List<Recipient> recipientList,
+            List<UUID> accountIDs
+//            List<Account> accounts
+    ) {
         this.email = email;
         this.password = password;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
+        this.name = name;
         this.socialSecurity = socialSecurity;
         this.gender = gender;
         this.address = address;
@@ -74,7 +93,8 @@ public class Users {
         this.ficoScore = ficoScore;
         this.joinDate = joinDate;
         this.recipientList = recipientList;
-        this.accounts = accounts;
+        this.accountIDs = accountIDs;
+//        this.accounts = accounts;
     }
 
     public Users() {
