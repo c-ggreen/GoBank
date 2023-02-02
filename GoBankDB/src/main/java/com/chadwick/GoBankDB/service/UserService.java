@@ -2,6 +2,7 @@ package com.chadwick.GoBankDB.service;
 
 import com.chadwick.GoBankDB.entity.Account;
 import com.chadwick.GoBankDB.entity.Users;
+import com.chadwick.GoBankDB.exception.NotFoundException;
 import com.chadwick.GoBankDB.model.Address;
 import com.chadwick.GoBankDB.model.Birthdate;
 import com.chadwick.GoBankDB.model.Name;
@@ -37,11 +38,11 @@ public class UserService {
         try {
             Users target = userRepository.findUserByEmail(email);
             if (target == null) {
-                throw new Exception("Query did not return rows.");
+                throw new NotFoundException("User not found.");
             }
             return target;
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.", e);
+            throw e;
         }
     }
 
@@ -49,7 +50,7 @@ public class UserService {
         try {
             return userRepository.findById(id).get();
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.");
+            throw new NotFoundException("User not found.");
         }
     }
 
@@ -179,7 +180,7 @@ public class UserService {
             userRepository.deleteById(id);
             return new ResponseStatusException(HttpStatus.OK).getStatus();
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.", e);
+            throw new NotFoundException("User not found.");
         }
     }
 }
