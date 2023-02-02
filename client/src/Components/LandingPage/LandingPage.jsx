@@ -2,10 +2,10 @@ import React, { useState, useContext } from "react";
 import { UserContext } from "../../Contexts/UserContext";
 import "./LandingPage.css";
 import UserServices from "../../Services/UserServices";
-import { TextField, Stack, Button } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import goBankImage from "./gobank.png";
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
+import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 
 function LandingPage(props) {
   const { setEmail } = useContext(UserContext);
@@ -46,12 +46,17 @@ function LandingPage(props) {
       </div>
       <div className="header text">
         <h1 className="headerTitle">GoBank</h1>
-        <Button variant="contained" color="inherit" onClick={navToSignUp} style={{height:"50%", textDecoration:"none"}}>
+        <Button
+          variant="contained"
+          color="inherit"
+          onClick={navToSignUp}
+          style={{ height: "50%", textDecoration: "none" }}
+        >
           Sign Up
         </Button>
       </div>
       <div className="subHeader text">
-        <p>"Your destination for slightly fraudulent banking!"</p>
+        <p>"Sign up for a free account today!"</p>
       </div>
       <div className="signInBlock">
         <div className="inputBlocks">
@@ -78,8 +83,7 @@ function LandingPage(props) {
             onClick={login}
             style={{ width: "20%" }}
           >
-            <DoubleArrowIcon/>
-            
+            <DoubleArrowIcon />
           </Button>
         </div>
       </div>

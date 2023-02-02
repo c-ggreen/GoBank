@@ -34,4 +34,15 @@ public class ApiExceptionHandler {
         );
         return new ResponseEntity<>(apiException,httpStatus);
     }
+    @ExceptionHandler(value = {ForbiddenException.class})
+    public ResponseEntity<Object> handleForbiddenRequestException(ForbiddenException e){
+        HttpStatus httpStatus = HttpStatus.FORBIDDEN;
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                httpStatus.value(),
+                httpStatus,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+        return new ResponseEntity<>(apiException,httpStatus);
+    }
 }

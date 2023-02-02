@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import "./SignUp.css";
 import UserServices from "../../Services/UserServices";
-import { TextField, Stack, Button } from "@mui/material";
+import {
+  TextField,
+  Stack,
+  Button,
+  RadioGroup,
+  Radio,
+  FormControlLabel,
+  FormLabel,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
@@ -15,12 +23,18 @@ function SignUp(props) {
   const [lastName, setLastName] = useState("");
   const [socialSecurity, setSocialSecurity] = useState("");
   const [gender, setGender] = useState("");
-  const [address, setAddress] = useState({});
-  const [birthday, setBirthday] = useState({});
+  const [street, setStreet] = useState("");
+  const [unit, setUnit] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zipCode, setZipCode] = useState("");
+  const [country, setCountry] = useState("");
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
   const [yearlyIncome, setYearlyIncome] = useState("");
   const [monthlyIncome, setMonthlyIncome] = useState("");
   const [personalDebt, setPersonalDebt] = useState("");
-  const [ficoScore, setFicoScore] = useState("");
 
   const handleEmail = (e) => {
     setEmail(e.target.value);
@@ -34,43 +48,93 @@ function SignUp(props) {
   const handleFirstName = (e) => {
     setFirstName(e.target.value);
   };
+  const handleMiddleName = (e) => {
+    setMiddleName(e.target.value);
+  };
   const handleLastName = (e) => {
     setLastName(e.target.value);
   };
+  const handleSocialSecurity = (e) => {
+    setSocialSecurity(e.target.value);
+  };
+  const handleGender = (e) => {
+    setGender(e.target.value);
+  };
+  const handleStreet = (e) => {
+    setStreet(e.target.value);
+  };
+  const handleUnit = (e) => {
+    setUnit(e.target.value);
+  };
+  const handleCity = (e) => {
+    setCity(e.target.value);
+  };
+  const handleState = (e) => {
+    setState(e.target.value);
+  };
+  const handleZipCode = (e) => {
+    setZipCode(e.target.value);
+  };
+  const handleCountry = (e) => {
+    setCountry(e.target.value);
+  };
+  const handleDay = (e) => {
+    setDay(e.target.value);
+  };
+  const handleMonth = (e) => {
+    setMonth(e.target.value);
+  };
+  const handleYear = (e) => {
+    setYear(e.target.value);
+  };
+  const handleYearlyIncome = (e) => {
+    setYearlyIncome(e.target.value);
+  };
+  const handleMonthlyIncome = (e) => {
+    setMonthlyIncome(e.target.value);
+  };
+  const handlePersonalDebt = (e) => {
+    setPersonalDebt(e.target.value);
+  };
+
   const navToLandingPage = () => {
     navigate("/");
   };
-
+  const calculateFico = () => {
+    //(max - min + 1) + min
+    return Math.floor(Math.random() * (850 - 350 + 1) + 350);
+  };
   const registerUser = () => {
-    try {
       if (password !== passwordConfirmation) {
         alert("Passwords do not match.");
       } else {
         UserServices.postUser({
           email: email,
           password: password,
-          firstName: firstName,
-          middleName: "Carter", //
-          lastName: lastName,
-          socialSecurity: "123456789", //
-          gender: "Male", //
+          name: {
+            first: firstName,
+            middle: middleName,
+            last: lastName,
+          },
+          socialSecurity: socialSecurity, 
+          gender: gender, 
           address: {
-            street: "1st Street",
-            unit: "1A",
-            city: "New York",
-            state: "New York",
-            zipCode: "10001",
-            country: "USA",
-          }, //
-          birthdate: {
-            day: "1",
-            month: "1",
-            year: "2000",
-          }, //
-          yearlyIncome: "125000", //
-          monthlyIncome: "7500", //
-          personalDebt: "20000", //
-          ficoScore: "650", //
+            street: street,
+            unit: unit,
+            city: city,
+            state: state,
+            zipCode: zipCode.toString(),
+            country: country,
+          }, 
+          birthday: {
+            day: day.toString(),
+            month: month.toString(),
+            year: year.toString(),
+          }, 
+          yearlyIncome: yearlyIncome.toString(), 
+          monthlyIncome: monthlyIncome.toString(), 
+          personalDebt: personalDebt.toString(), 
+          ficoScore: calculateFico().toString(), 
         })
           .then((res) => {
             console.log(res.data);
@@ -80,9 +144,6 @@ function SignUp(props) {
             console.log(err.message);
           });
       }
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   return (
@@ -98,38 +159,134 @@ function SignUp(props) {
           justifyContent="center"
           alignItems="center"
           spacing={1}
-          // border="1px solid blue"
-          width={"40%"}
+          border="1px solid green"
+          width={"75%"}
         >
           <h1 className="text">GoBank</h1>
           <h3 className="text">Registration</h3>
+          <div>
+            <TextField
+              label="First Name"
+              variant="outlined"
+              onChange={handleFirstName}
+            />
+            <TextField
+              label="Middle Name (Optional)"
+              variant="outlined"
+              onChange={handleMiddleName}
+            />
+            <TextField
+              label="Last Name"
+              variant="outlined"
+              onChange={handleLastName}
+            />
+          </div>
+          <div>
+            <TextField
+              label="Email"
+              variant="outlined"
+              type="email"
+              onChange={handleEmail}
+            />
+          </div>
+          <div>
+            <TextField
+              label="Password"
+              variant="outlined"
+              type="password"
+              onChange={handlePassword}
+            />
+            <TextField
+              label="Re-Enter Password"
+              variant="outlined"
+              type="password"
+              onChange={handlePasswordConfirmation}
+            />
+          </div>
           <TextField
-            label="First Name"
-            variant="outlined"
-            onChange={handleFirstName}
-          />
-          <TextField
-            label="Last Name"
-            variant="outlined"
-            onChange={handleLastName}
-          />
-          <TextField
-            label="Email"
-            variant="outlined"
-            type="email"
-            onChange={handleEmail}
-          />
-          <TextField
-            label="Password"
+            label="Social Security"
             variant="outlined"
             type="password"
-            onChange={handlePassword}
+            onChange={handleSocialSecurity}
+          />
+          <FormLabel>Gender</FormLabel>
+          <RadioGroup row value={gender} onChange={handleGender}>
+            <FormControlLabel value="Male" control={<Radio />} label="Male" />
+            <FormControlLabel
+              value="Female"
+              control={<Radio />}
+              label="Female"
+            />
+            <FormControlLabel
+              value="Not Specified"
+              control={<Radio />}
+              label="Prefer Not to Say"
+            />
+          </RadioGroup>
+          <div>
+            <h3 className="text">ADDRESS</h3>
+            <TextField
+              label="Street"
+              variant="outlined"
+              onChange={handleStreet}
+            />
+            <TextField label="Unit" variant="outlined" onChange={handleUnit} />
+            <TextField label="city" variant="outlined" onChange={handleCity} />
+            <TextField
+              label="State"
+              variant="outlined"
+              onChange={handleState}
+            />
+            <TextField
+              label="ZipCode"
+              variant="outlined"
+              type="number"
+              onChange={handleZipCode}
+            />
+            <TextField
+              label="Country"
+              variant="outlined"
+              onChange={handleCountry}
+            />
+          </div>
+          <div>
+            <h3 className="text"> BIRTHDAY</h3>
+            <TextField
+              label="Day(DD)"
+              variant="outlined"
+              type="number"
+              onChange={handleDay}
+            />
+            <TextField
+              label="Month(MM)"
+              variant="outlined"
+              type="number"
+              onChange={handleMonth}
+            />
+            <TextField
+              label="Year(YYYY)"
+              variant="outlined"
+              type="number"
+              onChange={handleYear}
+            />
+          </div>
+          <TextField
+            label="Yearly Income"
+            variant="outlined"
+            type="number"
+            onChange={handleYearlyIncome}
           />
           <TextField
-            label="Re-Enter Password"
+            label="Monthly Income"
             variant="outlined"
-            type="password"
-            onChange={handlePasswordConfirmation}
+            type="number"
+            onChange={handleMonthlyIncome}
+          />
+          <TextField
+            label="Personal Debt"
+            variant="outlined"
+            type="number"
+            onChange={handlePersonalDebt}
           />
           <Button variant="contained" color="inherit" onClick={registerUser}>
             Register

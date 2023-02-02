@@ -9,7 +9,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 @Data
 @NoArgsConstructor
-public class Birthdate {
+public class Birthday {
     @Column(nullable = false)
     private String day;
     @Column(nullable = false)

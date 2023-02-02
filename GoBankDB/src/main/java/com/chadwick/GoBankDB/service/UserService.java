@@ -2,9 +2,10 @@ package com.chadwick.GoBankDB.service;
 
 import com.chadwick.GoBankDB.entity.Account;
 import com.chadwick.GoBankDB.entity.Users;
+import com.chadwick.GoBankDB.exception.ForbiddenException;
 import com.chadwick.GoBankDB.exception.NotFoundException;
 import com.chadwick.GoBankDB.model.Address;
-import com.chadwick.GoBankDB.model.Birthdate;
+import com.chadwick.GoBankDB.model.Birthday;
 import com.chadwick.GoBankDB.model.Name;
 import com.chadwick.GoBankDB.repository.AccountRepository;
 import com.chadwick.GoBankDB.repository.UserRepository;
@@ -17,7 +18,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.UUID;
 
-// TODO: Create Error Classes to use/throw in API requests
 // TODO: Should my API requests return the data submitted?
 // TODO: Should my GET requests for the Users table return the password field in the body?
 
@@ -35,39 +35,35 @@ public class UserService {
     }
 
     public Users getUserByEmail(String email) {
-        try {
-            Users target = userRepository.findUserByEmail(email);
-            if (target == null) {
-                throw new NotFoundException("User not found.");
-            }
-            return target;
-        } catch (Exception e) {
-            throw e;
+        Users target = userRepository.findUserByEmail(email);
+        if (target == null) {
+            throw new NotFoundException("User not found.");
         }
+        return target;
     }
 
     public Users getUserByID(UUID id) {
-        try {
-            return userRepository.findById(id).get();
-        } catch (Exception e) {
-            throw new NotFoundException("User not found.");
+        if (!userRepository.findById(id).isPresent()) {
+            throw new NotFoundException("User not found");
         }
+        return userRepository.findById(id).get();
     }
 
     public List<UUID> getUserAccountIDs(UUID id) {
-        return userRepository.findById(id).get().getAccountIDs();
+        List<UUID> uuids = userRepository.findById(id).get().getAccountIDs();
+        if (uuids.isEmpty()) {
+            throw new NotFoundException("No accounts available.");
+        }
+        return uuids;
     }
 
     public Users createUser(Users user) {
-        try {
-            // the sql statement naturally returns null if no rows match the query, meaning that if it isn't null, a record with the email already exists
-            if (userRepository.findUserByEmail(user.getEmail()) != null) {
-                throw new Exception("Email " + user.getEmail() + " already exists.");
-            }
-            return userRepository.save(user);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, null, e);
+        // the sql statement naturally returns null if no rows match the query, meaning that if it isn't null, a record with the email already exists
+        if (userRepository.findUserByEmail(user.getEmail()) != null) {
+            throw new ForbiddenException("Email " + user.getEmail() + " already exists.");
         }
+        return userRepository.save(user);
+
     }
 
     public Users updateUser(UUID id, Users updates) {
@@ -144,17 +140,17 @@ public class UserService {
                 }
             }
             // to update birthday
-            if (updates.getBirthdate() != null) {
-                Birthdate update = updates.getBirthdate();
-                Birthdate birthdate = user.getBirthdate();
+            if (updates.getBirthday() != null) {
+                Birthday update = updates.getBirthday();
+                Birthday Birthday = user.getBirthday();
                 if (update.getDay() != null) {
-                    birthdate.setDay(update.getDay());
+                    Birthday.setDay(update.getDay());
                 }
                 if (update.getMonth() != null) {
-                    birthdate.setMonth(update.getMonth());
+                    Birthday.setMonth(update.getMonth());
                 }
                 if (update.getYear() != null) {
-                    birthdate.setYear(update.getYear());
+                    Birthday.setYear(update.getYear());
                 }
             }
             if (updates.getYearlyIncome() != null) {

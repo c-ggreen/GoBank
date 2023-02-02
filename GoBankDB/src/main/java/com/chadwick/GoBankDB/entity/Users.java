@@ -1,7 +1,7 @@
 package com.chadwick.GoBankDB.entity;
 
 import com.chadwick.GoBankDB.model.Address;
-import com.chadwick.GoBankDB.model.Birthdate;
+import com.chadwick.GoBankDB.model.Birthday;
 import com.chadwick.GoBankDB.model.Name;
 import com.chadwick.GoBankDB.model.Recipient;
 import lombok.Data;
@@ -37,7 +37,7 @@ public class Users {
     private Address address;
     @Embedded
     @Column(nullable = false)
-    private Birthdate birthdate;
+    private Birthday birthday;
     @Column
     private String yearlyIncome;
     @Column
@@ -69,7 +69,7 @@ public class Users {
             String socialSecurity,
             String gender,
             Address address,
-            Birthdate birthdate,
+            Birthday birthdate,
             String yearlyIncome,
             String monthlyIncome,
             String personalDebt,
@@ -85,7 +85,7 @@ public class Users {
         this.socialSecurity = socialSecurity;
         this.gender = gender;
         this.address = address;
-        this.birthdate = birthdate;
+        this.birthday = birthdate;
         this.yearlyIncome = yearlyIncome;
         this.monthlyIncome = monthlyIncome;
         this.personalDebt = personalDebt;

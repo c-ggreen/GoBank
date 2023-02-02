@@ -1,23 +1,26 @@
-import axios from 'axios'
+import axios from "axios";
 
-const URL = "http://localhost:8080/v1/user/"
+const URL = "http://localhost:8080/v1/user/";
 
-class UserService{
-    getAllUsers = () =>{
-        return axios.get(URL)
-    }
-    getUserByEmail = (email) =>{
-        return axios.get(URL + 'email/' + email)
-    }
-    postUser = (user) =>{
-        return axios.post(URL, user)
-    }
-    patchUser = (user) =>{
-        return axios.patch(URL, user)
-    }
-    deleteUser = (email) =>{
-        return axios.delete(URL+email)
-    }
+class UserService {
+  getAllUsers = () => {
+    return axios.get(URL);
+  };
+  getUserById = (id) => {
+    return axios.get(`${URL}${id}`);
+  };
+  getUserByEmail = (email) => {
+    return axios.get(`${URL}e/${email}`);
+  };
+  postUser = (user) => {
+    return axios.post(URL, user);
+  };
+  patchUser = (id) => {
+    return axios.patch(`${URL}/update/${id}`);
+  };
+  deleteUser = (id) => {
+    return axios.delete(`${URL}${id}`);
+  };
 }
 
-export default new UserService()
+export default new UserService();
