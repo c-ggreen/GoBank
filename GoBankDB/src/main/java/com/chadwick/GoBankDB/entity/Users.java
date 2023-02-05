@@ -69,7 +69,7 @@ public class Users {
             String socialSecurity,
             String gender,
             Address address,
-            Birthday birthdate,
+            Birthday birthday,
             String yearlyIncome,
             String monthlyIncome,
             String personalDebt,
@@ -85,7 +85,7 @@ public class Users {
         this.socialSecurity = socialSecurity;
         this.gender = gender;
         this.address = address;
-        this.birthday = birthdate;
+        this.birthday = birthday;
         this.yearlyIncome = yearlyIncome;
         this.monthlyIncome = monthlyIncome;
         this.personalDebt = personalDebt;
