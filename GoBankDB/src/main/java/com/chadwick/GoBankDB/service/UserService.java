@@ -20,8 +20,6 @@ import java.util.List;
 import java.util.UUID;
 
 // TODO: Should my POST/PATCH/PUT requests return the data submitted?
-// TODO: Create DTO classes and mappers to control the data returned to user i.e. making sure the password or other fields aren't returned in an api request. https://www.youtube.com/watch?v=5yquJa2x3Ko&ab_channel=Amigoscode
-// TODO: Which user fields should I exclude? (password, s.s.#, gender, yearly/monthly income, debt, join date )
 
 
 @Service

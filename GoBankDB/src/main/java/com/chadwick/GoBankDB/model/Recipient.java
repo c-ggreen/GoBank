@@ -11,8 +11,8 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 public class Recipient {
-    @Column(nullable = false)
-    private String recipientEmailId;
+    @Column
+    private String recipientNickName;
     @Embedded
     @Column(nullable = false)
     private Name recipientName;
