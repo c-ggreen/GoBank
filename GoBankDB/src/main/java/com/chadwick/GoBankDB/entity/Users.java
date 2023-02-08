@@ -8,7 +8,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,7 +48,7 @@ public class Users {
     private String ficoScore;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDate joinDate;
+    private Instant joinDate;
     @Column
     @ElementCollection
     private List<Recipient> recipientList;
@@ -74,7 +74,7 @@ public class Users {
             String monthlyIncome,
             String personalDebt,
             String ficoScore,
-            LocalDate joinDate,
+            Instant joinDate,
             List<Recipient> recipientList,
             List<UUID> accountIDs
 //            List<Account> accounts

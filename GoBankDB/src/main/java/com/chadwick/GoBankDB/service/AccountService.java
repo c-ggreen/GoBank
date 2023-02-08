@@ -53,8 +53,8 @@ public class AccountService {
             if(updates.getBalance() != null){
                 account.setBalance(updates.getBalance());
             }
-            if(updates.getTransactions() != null){
-                account.setTransactions(updates.getTransactions());
+            if(updates.getTransactionIDs() != null){
+                account.setTransactionIDs(updates.getTransactionIDs());
             }
 
             return accountRepository.save(account);

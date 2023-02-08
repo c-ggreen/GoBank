@@ -2,7 +2,7 @@ package com.chadwick.GoBankDB.entity;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 
@@ -18,7 +18,7 @@ public class Transaction {
     private String description;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDateTime transactionDate;
+    private Instant transactionDate;
     @Column(nullable = false)
     private String amount;
     @Column(nullable = false)
@@ -26,5 +26,5 @@ public class Transaction {
     @Column
     private String category; // Utilities, Food & Drink, Transportation, etc.
     @Column(nullable = false)
-    private String associatedAccountId;
+    private UUID associatedAccountId;
 }

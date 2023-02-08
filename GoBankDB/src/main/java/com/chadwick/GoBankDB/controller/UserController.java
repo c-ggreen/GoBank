@@ -1,5 +1,6 @@
 package com.chadwick.GoBankDB.controller;
 
+import com.chadwick.GoBankDB.dto.UserDTO;
 import com.chadwick.GoBankDB.entity.Users;
 import com.chadwick.GoBankDB.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,10 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Users getUserByID(@PathVariable UUID id) {
+    public UserDTO getUserByID(@PathVariable UUID id) {
         return userService.getUserByID(id);
     }
+
     @GetMapping("/e/{email}")
     public Users getUserByEmail(@PathVariable String email) {
         return userService.getUserByEmail(email);

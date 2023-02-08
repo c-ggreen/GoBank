@@ -1,5 +1,6 @@
 package com.chadwick.GoBankDB.service;
 
+import com.chadwick.GoBankDB.dto.UserDTO;
 import com.chadwick.GoBankDB.entity.Account;
 import com.chadwick.GoBankDB.entity.Users;
 import com.chadwick.GoBankDB.exception.ForbiddenException;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 // TODO: Should my POST/PATCH/PUT requests return the data submitted?
 // TODO: Create DTO classes and mappers to control the data returned to user i.e. making sure the password or other fields aren't returned in an api request. https://www.youtube.com/watch?v=5yquJa2x3Ko&ab_channel=Amigoscode
+// TODO: Which user fields should I exclude? (password, s.s.#, gender, yearly/monthly income, debt, join date )
 
 
 @Service
@@ -42,11 +44,21 @@ public class UserService {
         return target;
     }
 
-    public Users getUserByID(UUID id) {
+    public UserDTO getUserByID(UUID id) {
         if (!userRepository.findById(id).isPresent()) {
             throw new NotFoundException("User not found");
         }
-        return userRepository.findById(id).get();
+        Users user = userRepository.findById(id).get();
+        return new UserDTO(
+                user.getUserId(),
+                user.getEmail(),
+                user.getName(),
+                user.getGender(),
+                user.getAddress(),
+                user.getBirthday(),
+                user.getRecipientList(),
+                user.getAccountIDs()
+        );
     }
 
     public List<UUID> getUserAccountIDs(UUID id) {
@@ -68,7 +80,7 @@ public class UserService {
 
     public Users updateUser(UUID id, Users updates) {
         try {
-            Users user = getUserByID(id);
+            Users user = userRepository.findById(id).get();
             if (updates.getEmail() != null) {
                 user.setEmail(updates.getEmail());
                 // Will update account owner email if the user updates their email

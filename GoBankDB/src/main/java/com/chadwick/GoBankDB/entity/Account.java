@@ -4,7 +4,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,8 +34,11 @@ public class Account {
     private String balance;
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private LocalDate creationDate;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id")
-    private List<Transaction> transactions;
+    private Instant creationDate;
+    @Column
+    @ElementCollection
+    private List<UUID> transactionIDs; // only storing the transaction id's instead of the full transactions
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "account_id")
+//    private List<Transaction> transactions;
 }
