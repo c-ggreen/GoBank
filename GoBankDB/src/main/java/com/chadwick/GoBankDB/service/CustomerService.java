@@ -1,15 +1,15 @@
 package com.chadwick.GoBankDB.service;
 
-import com.chadwick.GoBankDB.dto.UserDTO;
+import com.chadwick.GoBankDB.dto.CustomerDTO;
 import com.chadwick.GoBankDB.entity.Account;
-import com.chadwick.GoBankDB.entity.Users;
+import com.chadwick.GoBankDB.entity.Customer;
 import com.chadwick.GoBankDB.exception.ForbiddenException;
 import com.chadwick.GoBankDB.exception.NotFoundException;
 import com.chadwick.GoBankDB.model.Address;
 import com.chadwick.GoBankDB.model.Birthday;
 import com.chadwick.GoBankDB.model.Name;
 import com.chadwick.GoBankDB.repository.AccountRepository;
-import com.chadwick.GoBankDB.repository.UserRepository;
+import com.chadwick.GoBankDB.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,77 +24,87 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class CustomerService {
     @Autowired
-    UserRepository userRepository;
+    CustomerRepository customerRepository;
     @Autowired
     AccountRepository accountRepository;
 
-    public Iterable<Users> getUsers() {
-        return userRepository.findAll();
+    public Iterable<Customer> getCustomers() {
+        return customerRepository.findAll();
     }
 
-    public Users getUserByEmail(String email) {
-        Users target = userRepository.findUserByEmail(email);
+    public CustomerDTO getCustomerByEmail(String email) {
+        Customer target = customerRepository.findCustomerByEmail(email);
         if (target == null) {
             throw new NotFoundException("User not found.");
         }
-        return target;
-    }
-
-    public UserDTO getUserByID(UUID id) {
-        if (!userRepository.findById(id).isPresent()) {
-            throw new NotFoundException("User not found");
-        }
-        Users user = userRepository.findById(id).get();
-        return new UserDTO(
-                user.getUserId(),
-                user.getEmail(),
-                user.getName(),
-                user.getGender(),
-                user.getAddress(),
-                user.getBirthday(),
-                user.getRecipientList(),
-                user.getAccountIDs()
+        return new CustomerDTO(
+                target.getCustomerId(),
+                target.getEmail(),
+                target.getName(),
+                target.getGender(),
+                target.getAddress(),
+                target.getBirthday(),
+                target.getRecipientList(),
+                target.getAccountIDs()
         );
     }
 
-    public List<UUID> getUserAccountIDs(UUID id) {
-        List<UUID> uuids = userRepository.findById(id).get().getAccountIDs();
+    public CustomerDTO getCustomerByID(UUID id) {
+        if (!customerRepository.findById(id).isPresent()) {
+            throw new NotFoundException("Customer not found");
+        }
+        Customer customer = customerRepository.findById(id).get();
+        return new CustomerDTO(
+                customer.getCustomerId(),
+                customer.getEmail(),
+                customer.getName(),
+                customer.getGender(),
+                customer.getAddress(),
+                customer.getBirthday(),
+                customer.getRecipientList(),
+                customer.getAccountIDs()
+        );
+    }
+
+    public List<UUID> getCustomerAccountIDs(UUID id) {
+        List<UUID> uuids = customerRepository.findById(id).get().getAccountIDs();
         if (uuids.isEmpty()) {
             throw new NotFoundException("No accounts available.");
         }
         return uuids;
     }
 
-    public Users createUser(Users user) {
+    public UUID createCustomer(Customer customer) {
         // the sql statement naturally returns null if no rows match the query, meaning that if it isn't null, a record with the email already exists
-        if (userRepository.findUserByEmail(user.getEmail()) != null) {
-            throw new ForbiddenException("Email " + user.getEmail() + " already exists.");
+        if (customerRepository.findCustomerByEmail(customer.getEmail()) != null) {
+            throw new ForbiddenException("Email " + customer.getEmail() + " already exists.");
         }
-        return userRepository.save(user);
+        Customer customer1 = customerRepository.save(customer);
+        return customer1.getCustomerId();
 
     }
 
-    public Users updateUser(UUID id, Users updates) {
+    public Customer updateCustomer(UUID id, Customer updates) {
         try {
-            Users user = userRepository.findById(id).get();
+            Customer customer = customerRepository.findById(id).get();
             if (updates.getEmail() != null) {
-                user.setEmail(updates.getEmail());
+                customer.setEmail(updates.getEmail());
                 // Will update account owner email if the user updates their email
-                List<UUID> accountIDs = user.getAccountIDs(); // gets the account id's
+                List<UUID> accountIDs = customer.getAccountIDs(); // gets the account id's
                 for (UUID item : accountIDs) { //iterates through the list of ids
                     Account account = accountRepository.findById(item).get(); //returns the account associated with the id in the iteration
-                    account.setAccountOwnerEmail(user.getEmail()); // updates the owner email
+                    account.setAccountOwnerEmail(customer.getEmail()); // updates the owner email
                     accountRepository.save(account); // saves the account
                 }
             }
             if (updates.getPassword() != null) {
-                user.setPassword(updates.getPassword());
+                customer.setPassword(updates.getPassword());
             }
             if (updates.getName() != null) {
                 Name update = updates.getName();
-                Name name = user.getName();
+                Name name = customer.getName();
                 if (update.getFirst() != null) {
                     name.setFirst(update.getFirst());
                 }
@@ -106,7 +116,7 @@ public class UserService {
                 }
 
                 // Will update account owner name if the user updates their name
-                for (UUID accID : user.getAccountIDs()) { //iterates through the list of ids
+                for (UUID accID : customer.getAccountIDs()) { //iterates through the list of ids
                     Account account = accountRepository.findById(accID).get(); //returns the account associated with the id in the iteration
                     Name accName = account.getAccountOwnerName(); //temp variable to hold the current account holder name
                     if (update.getFirst() != null) {
@@ -124,12 +134,12 @@ public class UserService {
             }
 
             if (updates.getGender() != null) {
-                user.setGender(updates.getGender());
+                customer.setGender(updates.getGender());
             }
             // to update address
             if (updates.getAddress() != null) {
                 Address update = updates.getAddress();
-                Address address = user.getAddress();
+                Address address = customer.getAddress();
                 if (update.getStreet() != null) {
                     address.setStreet(update.getStreet());
                 }
@@ -152,7 +162,7 @@ public class UserService {
             // to update birthday
             if (updates.getBirthday() != null) {
                 Birthday update = updates.getBirthday();
-                Birthday Birthday = user.getBirthday();
+                Birthday Birthday = customer.getBirthday();
                 if (update.getDay() != null) {
                     Birthday.setDay(update.getDay());
                 }
@@ -164,29 +174,29 @@ public class UserService {
                 }
             }
             if (updates.getYearlyIncome() != null) {
-                user.setYearlyIncome(updates.getYearlyIncome());
+                customer.setYearlyIncome(updates.getYearlyIncome());
             }
             if (updates.getMonthlyIncome() != null) {
-                user.setMonthlyIncome(updates.getMonthlyIncome());
+                customer.setMonthlyIncome(updates.getMonthlyIncome());
             }
             if (updates.getPersonalDebt() != null) {
-                user.setPersonalDebt(updates.getPersonalDebt());
+                customer.setPersonalDebt(updates.getPersonalDebt());
             }
             if (updates.getAccountIDs() != null) {
-                user.setAccountIDs(updates.getAccountIDs());
+                customer.setAccountIDs(updates.getAccountIDs());
             }
-            return userRepository.save(user);
+            return customerRepository.save(customer);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, null, e);
         }
     }
 
-    public HttpStatus deleteUser(UUID id) {
+    public HttpStatus deleteCustomer(UUID id) {
         try {
-            userRepository.deleteById(id);
+            customerRepository.deleteById(id);
             return new ResponseStatusException(HttpStatus.OK).getStatus();
         } catch (Exception e) {
-            throw new NotFoundException("User not found.");
+            throw new NotFoundException("Customer not found.");
         }
     }
 }

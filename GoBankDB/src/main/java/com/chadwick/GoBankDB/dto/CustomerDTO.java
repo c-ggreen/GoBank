@@ -8,7 +8,7 @@ import com.chadwick.GoBankDB.model.Recipient;
 import java.util.List;
 import java.util.UUID;
 
-public record UserDTO(
+public record CustomerDTO(
         UUID userId,
         String email,
         Name name,

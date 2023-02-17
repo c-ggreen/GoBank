@@ -1,8 +1,8 @@
 package com.chadwick.GoBankDB.unit.Service;
 
 import com.chadwick.GoBankDB.repository.AccountRepository;
-import com.chadwick.GoBankDB.repository.UserRepository;
-import com.chadwick.GoBankDB.service.UserService;
+import com.chadwick.GoBankDB.repository.CustomerRepository;
+import com.chadwick.GoBankDB.service.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -13,22 +13,22 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class CustomerServiceTest {
     @Mock
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
     @Mock
     private AccountRepository accountRepository;
-    private UserService userService;
+    private CustomerService customerService;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository, accountRepository);
+        customerService = new CustomerService(customerRepository, accountRepository);
     }
 
     @Test
     void getUsers() {
-        userService.getUsers();
-        verify(userRepository).findAll();
+        customerService.getCustomers();
+        verify(customerRepository).findAll();
     }
 
     @Test

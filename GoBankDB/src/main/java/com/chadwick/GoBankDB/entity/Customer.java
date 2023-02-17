@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "Customer")
 @Data
 //@NoArgsConstructor
-public class Users {
+public class Customer {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    private UUID userId;
+    private UUID customerId;
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
@@ -62,7 +62,7 @@ public class Users {
 //    private List<Account> accounts;
 
 
-    public Users(
+    public Customer(
             String email,
             String password,
             Name name,
@@ -96,6 +96,6 @@ public class Users {
 //        this.accounts = accounts;
     }
 
-    public Users() {
+    public Customer() {
     }
 }

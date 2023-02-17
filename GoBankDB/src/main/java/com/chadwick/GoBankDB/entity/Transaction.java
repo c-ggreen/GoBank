@@ -19,9 +19,9 @@ public class Transaction {
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private Instant transactionDate;
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String amount;
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private String type; // Credit or Debit
     @Column
     private String category; // Utilities, Food & Drink, Transportation, etc.

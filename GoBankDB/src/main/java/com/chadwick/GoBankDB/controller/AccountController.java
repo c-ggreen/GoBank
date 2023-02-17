@@ -1,15 +1,18 @@
 package com.chadwick.GoBankDB.controller;
 
+import com.chadwick.GoBankDB.dto.AccountDTO;
 import com.chadwick.GoBankDB.entity.Account;
 import com.chadwick.GoBankDB.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/api/v1/account")
 public class AccountController {
     @Autowired
     AccountService accountService;
@@ -24,12 +27,17 @@ public class AccountController {
         return accountService.getAccountByID(accountId);
     }
 
+    @GetMapping("/user/{accountOwnerID}")
+    public List<Account> getAccountsByOwnerId(@PathVariable UUID accountOwnerID){
+        return accountService.getAccountsByOwnerId(accountOwnerID);
+    }
+
     @PostMapping
-    public Account createAccount(@RequestBody Account account){
+    public AccountDTO createAccount(@RequestBody Account account){
         return accountService.createAccount(account);
     }
 
-    @PatchMapping("update/{id}")
+    @PatchMapping("/{id}")
     public Account updateAccount(@PathVariable UUID id, @RequestBody Account updates){
         return accountService.updateAccount(id, updates);
     }

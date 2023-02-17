@@ -1,7 +1,7 @@
 package com.chadwick.GoBankDB.unit.Repository;
 
-import com.chadwick.GoBankDB.entity.Users;
-import com.chadwick.GoBankDB.repository.UserRepository;
+import com.chadwick.GoBankDB.entity.Customer;
+import com.chadwick.GoBankDB.repository.CustomerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
@@ -20,9 +20,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class UserRepositoryTest {
+class CustomerRepositoryTest {
     @Autowired
-    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
 
     @BeforeAll
     void setUp() {
@@ -32,8 +32,8 @@ class UserRepositoryTest {
             for (int i = 0; i < array.size(); i++) {
                 String obj = array.get(i).toString();
                 ObjectMapper mapper = new ObjectMapper();
-                Users user = mapper.readValue(obj, Users.class);
-                userRepository.save(user);
+                Customer user = mapper.readValue(obj, Customer.class);
+                customerRepository.save(user);
             }
         }catch (Exception e){
             throw new Error(e);
@@ -43,10 +43,10 @@ class UserRepositoryTest {
     @Test
     void itShouldCheckThatAll10UsersWereSaved(){
         try {
-            Iterable<Users> usersIterable = userRepository.findAll();
-            ArrayList<Users> usersArrayList = new ArrayList<>((Collection) usersIterable);
-            assertThat(usersArrayList.size()).isEqualTo(10);
-            assertThat(usersArrayList.get(0).getEmail()).isNotNull();
+            Iterable<Customer> usersIterable = customerRepository.findAll();
+            ArrayList<Customer> customerArrayList = new ArrayList<>((Collection) usersIterable);
+            assertThat(customerArrayList.size()).isEqualTo(10);
+            assertThat(customerArrayList.get(0).getEmail()).isNotNull();
         }catch (Exception e){
             throw new Error(e);
         }

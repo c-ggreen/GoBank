@@ -1,5 +1,6 @@
 package com.chadwick.GoBankDB.service;
 
+import com.chadwick.GoBankDB.dto.AccountDTO;
 import com.chadwick.GoBankDB.entity.Account;
 import com.chadwick.GoBankDB.model.Name;
 import com.chadwick.GoBankDB.repository.AccountRepository;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.UUID;
 
 // TODO: Build out Account Service and Controller like what was done for User; need to identify use cases though
@@ -24,8 +26,19 @@ public class AccountService {
         return accountRepository.findById(accountId).get();
     }
 
-    public Account createAccount(Account account){
-        return accountRepository.save(account);
+    public List<Account> getAccountsByOwnerId(UUID accountOwnerId){
+        return accountRepository.findAccountsByOwnerId(accountOwnerId);
+    }
+
+    public AccountDTO createAccount(Account account){
+        Account acc = accountRepository.save(account);
+        return new AccountDTO(
+                acc.getAccountId(),
+                acc.getAccountOwnerId(),
+                acc.getAccountOwnerName(),
+                acc.getBalance(),
+                acc.getTransactionIDs()
+        );
     }
 
     public Account updateAccount(UUID id, Account updates){
