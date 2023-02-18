@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -16,6 +17,10 @@ public class TransactionService {
 
     public Iterable<Transaction> getTransactions(){
         return transactionRepository.findAll();
+    }
+
+    public List<Transaction> getAllAccountTransactions(UUID associatedAccountId){
+        return transactionRepository.findAllAccountTransactions(associatedAccountId);
     }
 
     public TransactionDTO getTransactionByID(UUID id){

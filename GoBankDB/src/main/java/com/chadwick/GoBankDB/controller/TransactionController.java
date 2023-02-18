@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin
@@ -19,6 +20,11 @@ public class TransactionController {
     @GetMapping
     public Iterable<Transaction> getTransactions(){
         return transactionService.getTransactions();
+    }
+
+    @GetMapping("/account/{associatedAccountId}")
+    public List<Transaction> getAllAccountTransactions(@PathVariable UUID associatedAccountId){
+        return transactionService.getAllAccountTransactions(associatedAccountId);
     }
 
     @GetMapping("/{id}")
