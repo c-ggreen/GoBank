@@ -10,17 +10,14 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "Customer")
 @Data
-//@NoArgsConstructor
 public class Customer {
     @Id
-    @GeneratedValue
     @Column(nullable = false)
-    private UUID customerId;
+    private int customerId = randomInt();
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
@@ -55,47 +52,15 @@ public class Customer {
 
     @Column
     @ElementCollection
-    private List<UUID> accountIDs;
+    private List<Long> accountIDs;
 
 //    @OneToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "user_id")
 //    private List<Account> accounts;
 
-
-    public Customer(
-            String email,
-            String password,
-            Name name,
-            String socialSecurity,
-            String gender,
-            Address address,
-            Birthday birthday,
-            String yearlyIncome,
-            String monthlyIncome,
-            String personalDebt,
-            String ficoScore,
-            Instant joinDate,
-            List<Recipient> recipientList,
-            List<UUID> accountIDs
-//            List<Account> accounts
-    ) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.socialSecurity = socialSecurity;
-        this.gender = gender;
-        this.address = address;
-        this.birthday = birthday;
-        this.yearlyIncome = yearlyIncome;
-        this.monthlyIncome = monthlyIncome;
-        this.personalDebt = personalDebt;
-        this.ficoScore = ficoScore;
-        this.joinDate = joinDate;
-        this.recipientList = recipientList;
-        this.accountIDs = accountIDs;
-//        this.accounts = accounts;
-    }
-
-    public Customer() {
+    public int randomInt(){
+        int min = 1_000_000;
+        int max = 9_999_999;
+        return min + (int) (Math.random() *(max - min));
     }
 }

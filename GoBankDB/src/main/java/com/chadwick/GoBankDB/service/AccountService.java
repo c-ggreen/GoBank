@@ -2,36 +2,45 @@ package com.chadwick.GoBankDB.service;
 
 import com.chadwick.GoBankDB.dto.AccountDTO;
 import com.chadwick.GoBankDB.entity.Account;
+import com.chadwick.GoBankDB.entity.Customer;
 import com.chadwick.GoBankDB.model.Name;
 import com.chadwick.GoBankDB.repository.AccountRepository;
+import com.chadwick.GoBankDB.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.UUID;
 
-// TODO: Build out Account Service and Controller like what was done for User; need to identify use cases though
 @Service
 public class AccountService {
     @Autowired
     AccountRepository accountRepository;
+    @Autowired
+    CustomerRepository customerRepository;
 
     public Iterable<Account> getAccounts(){
         return accountRepository.findAll();
     }
 
-    public Account getAccountByID(UUID accountId){
+    public Account getAccountByID(long accountId){
         return accountRepository.findById(accountId).get();
     }
 
-    public List<Account> getAccountsByOwnerId(UUID accountOwnerId){
+    public List<Account> getAccountsByOwnerId(int accountOwnerId){
         return accountRepository.findAccountsByOwnerId(accountOwnerId);
     }
 
-    public AccountDTO createAccount(Account account){
+    public AccountDTO createAccount(Account account, int accountOwnerID){
+        // when creating a new account, the customer ID is taken in to add to the account object and is used to query the customer to then add the account id to the list in the customer entity
+        account.setAccountOwnerId(accountOwnerID);
         Account acc = accountRepository.save(account);
+        Customer customer = customerRepository.findById(accountOwnerID).get();
+        List<Long> accountIDs = customer.getAccountIDs();
+        accountIDs.add(acc.getAccountId());
+        customer.setAccountIDs(accountIDs);
+        customerRepository.save(customer);
         return new AccountDTO(
                 acc.getAccountId(),
                 acc.getAccountOwnerId(),
@@ -41,7 +50,7 @@ public class AccountService {
         );
     }
 
-    public Account updateAccount(UUID id, Account updates){
+    public Account updateAccount(long id, Account updates){
         try{
             Account account = accountRepository.findById(id).get();
 
@@ -77,7 +86,7 @@ public class AccountService {
         }
     }
 
-    public HttpStatus deleteAccount(UUID accountId){
+    public HttpStatus deleteAccount(long accountId){
         accountRepository.deleteById(accountId);
         return HttpStatus.OK;
     }

@@ -6,19 +6,16 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
-
 
 @Entity
 @Table(name = "Account")
 @Data
 public class Account {
     @Id
-    @GeneratedValue
     @Column(nullable = false)
-    private UUID accountId;
+    private long accountId = randomLong();
     @Column(nullable = false)
-    private UUID accountOwnerId;
+    private int accountOwnerId;
     @Embedded
     @Column(nullable = false)
     private Name accountOwnerName; // Should be sourced from Users name fields
@@ -37,8 +34,14 @@ public class Account {
     private Instant creationDate;
     @Column
     @ElementCollection
-    private List<UUID> transactionIDs; // only storing the transaction id's instead of the full transactions
+    private List<Long> transactionIDs; // only storing the transaction id's instead of the full transactions
 //    @OneToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "account_id")
 //    private List<Transaction> transactions;
+
+    public long randomLong(){
+        long leftLimit = 1_000_000_000L;
+        long rightLimit = 9_999_999_999L;
+        return leftLimit + (long) (Math.random() * (rightLimit - leftLimit));
+    }
 }

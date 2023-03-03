@@ -22,34 +22,34 @@ public class CustomerController {
         return customerService.getCustomers();
     }
 
-    @GetMapping("/{id}")
-    public CustomerDTO getCustomerByID(@PathVariable UUID id) {
+    @GetMapping("/id")
+    public CustomerDTO getCustomerByID(@RequestParam int id) {
         return customerService.getCustomerByID(id);
     }
 
-    @GetMapping("/email/{email}")
-    public CustomerDTO getCustomerByEmail(@PathVariable String email) {
+    @GetMapping("/email")
+    public CustomerDTO getCustomerByEmail(@RequestParam String email) {
         return customerService.getCustomerByEmail(email);
     }
 
-    @GetMapping("/{id}/accounts")
-    public List<UUID> getCustomerAccountIDs(@PathVariable UUID id) {
+    @GetMapping("/accounts")
+    public List<Long> getCustomerAccountIDs(@RequestParam int id) {
         return customerService.getCustomerAccountIDs(id);
     }
 
     @PostMapping
-    public UUID createCustomer(@RequestBody Customer customer) {
+    public int createCustomer(@RequestBody Customer customer) {
         return customerService.createCustomer(customer);
     }
 
 
-    @PatchMapping("/{id}")
-    public Customer updateCustomer(@PathVariable UUID id, @RequestBody Customer updates) {
+    @PatchMapping
+    public CustomerDTO updateCustomer(@RequestParam int id, @RequestBody Customer updates) {
         return customerService.updateCustomer(id, updates);
     }
 
-    @DeleteMapping("/{id}")
-    public HttpStatus deleteCustomer(@PathVariable UUID id) {
+    @DeleteMapping
+    public HttpStatus deleteCustomer(@RequestParam int id) {
         return customerService.deleteCustomer(id);
     }
 }

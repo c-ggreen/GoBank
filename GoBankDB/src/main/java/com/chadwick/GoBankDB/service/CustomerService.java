@@ -51,7 +51,7 @@ public class CustomerService {
         );
     }
 
-    public CustomerDTO getCustomerByID(UUID id) {
+    public CustomerDTO getCustomerByID(int id) {
         if (!customerRepository.findById(id).isPresent()) {
             throw new NotFoundException("Customer not found");
         }
@@ -68,15 +68,15 @@ public class CustomerService {
         );
     }
 
-    public List<UUID> getCustomerAccountIDs(UUID id) {
-        List<UUID> uuids = customerRepository.findById(id).get().getAccountIDs();
-        if (uuids.isEmpty()) {
+    public List<Long> getCustomerAccountIDs(int id) {
+        List<Long> ids = customerRepository.findById(id).get().getAccountIDs();
+        if (ids.isEmpty()) {
             throw new NotFoundException("No accounts available.");
         }
-        return uuids;
+        return ids;
     }
 
-    public UUID createCustomer(Customer customer) {
+    public int createCustomer(Customer customer) {
         // the sql statement naturally returns null if no rows match the query, meaning that if it isn't null, a record with the email already exists
         if (customerRepository.findCustomerByEmail(customer.getEmail()) != null) {
             throw new ForbiddenException("Email " + customer.getEmail() + " already exists.");
@@ -86,14 +86,14 @@ public class CustomerService {
 
     }
 
-    public Customer updateCustomer(UUID id, Customer updates) {
+    public CustomerDTO updateCustomer(int id, Customer updates) {
         try {
             Customer customer = customerRepository.findById(id).get();
             if (updates.getEmail() != null) {
                 customer.setEmail(updates.getEmail());
                 // Will update account owner email if the user updates their email
-                List<UUID> accountIDs = customer.getAccountIDs(); // gets the account id's
-                for (UUID item : accountIDs) { //iterates through the list of ids
+                List<Long> accountIDs = customer.getAccountIDs(); // gets the account id's
+                for (long item : accountIDs) { //iterates through the list of ids
                     Account account = accountRepository.findById(item).get(); //returns the account associated with the id in the iteration
                     account.setAccountOwnerEmail(customer.getEmail()); // updates the owner email
                     accountRepository.save(account); // saves the account
@@ -116,7 +116,7 @@ public class CustomerService {
                 }
 
                 // Will update account owner name if the user updates their name
-                for (UUID accID : customer.getAccountIDs()) { //iterates through the list of ids
+                for (long accID : customer.getAccountIDs()) { //iterates through the list of ids
                     Account account = accountRepository.findById(accID).get(); //returns the account associated with the id in the iteration
                     Name accName = account.getAccountOwnerName(); //temp variable to hold the current account holder name
                     if (update.getFirst() != null) {
@@ -185,13 +185,23 @@ public class CustomerService {
             if (updates.getAccountIDs() != null) {
                 customer.setAccountIDs(updates.getAccountIDs());
             }
-            return customerRepository.save(customer);
+            customerRepository.save(customer);
+            return new CustomerDTO(
+                    customer.getCustomerId(),
+                    customer.getEmail(),
+                    customer.getName(),
+                    customer.getGender(),
+                    customer.getAddress(),
+                    customer.getBirthday(),
+                    customer.getRecipientList(),
+                    customer.getAccountIDs()
+            );
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, null, e);
         }
     }
 
-    public HttpStatus deleteCustomer(UUID id) {
+    public HttpStatus deleteCustomer(int id) {
         try {
             customerRepository.deleteById(id);
             return new ResponseStatusException(HttpStatus.OK).getStatus();

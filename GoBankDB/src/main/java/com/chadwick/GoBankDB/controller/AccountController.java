@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -23,27 +22,27 @@ public class AccountController {
     }
 
     @GetMapping("/{accountId}")
-    public Account getAccountByID(@PathVariable UUID accountId){
+    public Account getAccountByID(@PathVariable long accountId){
         return accountService.getAccountByID(accountId);
     }
 
-    @GetMapping("/user/{accountOwnerID}")
-    public List<Account> getAccountsByOwnerId(@PathVariable UUID accountOwnerID){
+    @GetMapping("/customer/{accountOwnerID}")
+    public List<Account> getAccountsByOwnerId(@PathVariable int accountOwnerID){
         return accountService.getAccountsByOwnerId(accountOwnerID);
     }
 
     @PostMapping
-    public AccountDTO createAccount(@RequestBody Account account){
-        return accountService.createAccount(account);
+    public AccountDTO createAccount(@RequestBody Account account, @RequestParam int accountOwnerID){
+        return accountService.createAccount(account, accountOwnerID);
     }
 
-    @PatchMapping("/{id}")
-    public Account updateAccount(@PathVariable UUID id, @RequestBody Account updates){
+    @PatchMapping
+    public Account updateAccount(@RequestParam long id, @RequestBody Account updates){
         return accountService.updateAccount(id, updates);
     }
 
-    @DeleteMapping("/{accountId}")
-    public HttpStatus deleteAccount(@PathVariable UUID accountId){
+    @DeleteMapping
+    public HttpStatus deleteAccount(@RequestParam long accountId){
         return accountService.deleteAccount(accountId);
     }
 

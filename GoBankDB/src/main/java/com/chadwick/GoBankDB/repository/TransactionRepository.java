@@ -9,9 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.UUID;
 
-public interface TransactionRepository extends CrudRepository<Transaction, UUID> {
+public interface TransactionRepository extends CrudRepository<Transaction, Long> {
     @Query("SELECT t FROM Transaction t WHERE t.associatedAccountId = :associatedAccountId")
     List<Transaction> findAllAccountTransactions(
-            @Param("associatedAccountId") UUID associatedAccountId
+            @Param("associatedAccountId") long associatedAccountId
     );
 }

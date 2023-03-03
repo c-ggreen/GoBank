@@ -22,19 +22,19 @@ public class TransactionController {
         return transactionService.getTransactions();
     }
 
-    @GetMapping("/account/{associatedAccountId}")
-    public List<Transaction> getAllAccountTransactions(@PathVariable UUID associatedAccountId){
+    @GetMapping("/account")
+    public List<Transaction> getAllAccountTransactions(@RequestParam long associatedAccountId){
         return transactionService.getAllAccountTransactions(associatedAccountId);
     }
 
-    @GetMapping("/{id}")
-    public TransactionDTO getTransactionByID(@PathVariable UUID id){
+    @GetMapping("/id")
+    public TransactionDTO getTransactionByID(@RequestParam long id){
         return transactionService.getTransactionByID(id);
     }
 
     @PostMapping
-    public UUID createTransaction(@RequestBody Transaction transaction){
-        return transactionService.createTransaction(transaction);
+    public long createTransaction(@RequestBody Transaction transaction, @RequestParam long associatedAccountId){
+        return transactionService.createTransaction(transaction, associatedAccountId);
     }
 // Transactions shouldn't be updatable
 //    @PatchMapping
@@ -42,8 +42,8 @@ public class TransactionController {
 //        return transactionService.updateTransaction(transaction);
 //    }
 
-    @DeleteMapping("/{id}")
-    public HttpStatus deleteTransaction(@PathVariable UUID id){
+    @DeleteMapping
+    public HttpStatus deleteTransaction(@RequestParam long id){
         return transactionService.deleteTransaction(id);
     }
 }

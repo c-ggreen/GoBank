@@ -6,16 +6,15 @@ import com.chadwick.GoBankDB.model.Name;
 import com.chadwick.GoBankDB.model.Recipient;
 
 import java.util.List;
-import java.util.UUID;
 
 public record CustomerDTO(
-        UUID userId,
+        int userId,
         String email,
         Name name,
         String gender,
         Address address,
         Birthday birthday,
         List<Recipient> recipientList,
-        List<UUID> accountIDs
+        List<Long> accountIDs
 ) {
 }
