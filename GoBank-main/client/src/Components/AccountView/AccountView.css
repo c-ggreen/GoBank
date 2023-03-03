@@ -1,0 +1,33 @@
+.text{
+    font-family: 'Courier New', Courier, monospace;
+}
+.accountViewBlock{
+    height:90vh;
+    /* border: 1px solid blue; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.accountViewHeader{
+    border-bottom: 1px solid black;
+    width: 75%;
+    display: flex;
+    justify-content: space-between;
+}
+.backButton{
+    /* border: 1px solid red; */
+    width: 95vw;
+}
+.actionButtons{
+    /* border: 1px solid red; */
+    width: 30vw;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1em;
+}
+.transactionBlock{
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+    padding: 1em;
+    overflow: auto;
+    width: 40vw;
+}
