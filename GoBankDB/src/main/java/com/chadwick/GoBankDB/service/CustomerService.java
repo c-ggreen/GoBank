@@ -3,6 +3,7 @@ package com.chadwick.GoBankDB.service;
 import com.chadwick.GoBankDB.dto.CustomerDTO;
 import com.chadwick.GoBankDB.entity.Account;
 import com.chadwick.GoBankDB.entity.Customer;
+import com.chadwick.GoBankDB.exception.BadRequestException;
 import com.chadwick.GoBankDB.exception.ForbiddenException;
 import com.chadwick.GoBankDB.exception.NotFoundException;
 import com.chadwick.GoBankDB.model.Address;
@@ -16,11 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
-
-// TODO: Should my POST/PATCH/PUT requests return the data submitted?
-
+import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -76,20 +75,28 @@ public class CustomerService {
         return ids;
     }
 
-    public int createCustomer(Customer customer) {
+    public Map<String,Integer> createCustomer(Customer customer) {
+        Map<String,Integer> map = new HashMap<>();
         // the sql statement naturally returns null if no rows match the query, meaning that if it isn't null, a record with the email already exists
         if (customerRepository.findCustomerByEmail(customer.getEmail()) != null) {
             throw new ForbiddenException("Email " + customer.getEmail() + " already exists.");
         }
+        if (customer.getPassword().length() < 8) {
+            throw new BadRequestException("Password is to short");
+        }
         Customer customer1 = customerRepository.save(customer);
-        return customer1.getCustomerId();
-
+        map.put("customerId", customer1.getCustomerId());
+        return map;
     }
 
     public CustomerDTO updateCustomer(int id, Customer updates) {
         try {
             Customer customer = customerRepository.findById(id).get();
             if (updates.getEmail() != null) {
+                    // checks to see if updated email already exists, if it does throw an exception
+                if(customerRepository.findCustomerByEmail(updates.getEmail()) != null){
+                    throw new BadRequestException("Email already exists");
+                }
                 customer.setEmail(updates.getEmail());
                 // Will update account owner email if the user updates their email
                 List<Long> accountIDs = customer.getAccountIDs(); // gets the account id's
