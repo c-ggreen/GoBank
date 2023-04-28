@@ -5,6 +5,7 @@ import com.chadwick.GoBankDB.entity.Account;
 import com.chadwick.GoBankDB.entity.Customer;
 import com.chadwick.GoBankDB.exception.BadRequestException;
 import com.chadwick.GoBankDB.exception.ForbiddenException;
+import com.chadwick.GoBankDB.exception.InternalServerException;
 import com.chadwick.GoBankDB.exception.NotFoundException;
 import com.chadwick.GoBankDB.model.Address;
 import com.chadwick.GoBankDB.model.Birthday;
@@ -34,68 +35,106 @@ public class CustomerService {
     }
 
     public CustomerDTO getCustomerByEmail(String email) {
-        Customer target = customerRepository.findCustomerByEmail(email);
-        if (target == null) {
-            throw new NotFoundException("User not found.");
+        try {
+            Customer target = customerRepository.findCustomerByEmail(email);
+            if (target == null) {
+                throw new NotFoundException("Customer email not found.");
+            }
+            return new CustomerDTO(
+                    target.getCustomerId(),
+                    target.getEmail(),
+                    target.getName(),
+                    target.getGender(),
+                    target.getAddress(),
+                    target.getBirthday(),
+                    target.getRecipientList(),
+                    target.getAccountIDs()
+            );
+        }catch (Exception e) {
+            if(e instanceof NotFoundException){
+                throw e;
+            }
+            throw new InternalServerException(e.getMessage());
         }
-        return new CustomerDTO(
-                target.getCustomerId(),
-                target.getEmail(),
-                target.getName(),
-                target.getGender(),
-                target.getAddress(),
-                target.getBirthday(),
-                target.getRecipientList(),
-                target.getAccountIDs()
-        );
+
     }
 
     public CustomerDTO getCustomerByID(int id) {
-        if (!customerRepository.findById(id).isPresent()) {
-            throw new NotFoundException("Customer not found");
+        try {
+            if (!customerRepository.findById(id).isPresent()) {
+                throw new NotFoundException("Customer not found");
+            }
+            Customer customer = customerRepository.findById(id).get();
+            return new CustomerDTO(
+                    customer.getCustomerId(),
+                    customer.getEmail(),
+                    customer.getName(),
+                    customer.getGender(),
+                    customer.getAddress(),
+                    customer.getBirthday(),
+                    customer.getRecipientList(),
+                    customer.getAccountIDs()
+            );
+        } catch (Exception e) {
+            if(e instanceof NotFoundException){
+                throw e;
+            }
+            throw new InternalServerException(e.getMessage());
         }
-        Customer customer = customerRepository.findById(id).get();
-        return new CustomerDTO(
-                customer.getCustomerId(),
-                customer.getEmail(),
-                customer.getName(),
-                customer.getGender(),
-                customer.getAddress(),
-                customer.getBirthday(),
-                customer.getRecipientList(),
-                customer.getAccountIDs()
-        );
+
     }
 
     public List<Long> getCustomerAccountIDs(int id) {
-        List<Long> ids = customerRepository.findById(id).get().getAccountIDs();
-        if (ids.isEmpty()) {
-            throw new NotFoundException("No accounts available.");
+        try {
+            List<Long> ids = customerRepository.findById(id).get().getAccountIDs();
+            if (ids.isEmpty()) {
+                throw new NotFoundException("No accounts available.");
+            }
+            return ids;
+        }catch (Exception e) {
+            if(e instanceof NotFoundException){
+                throw e;
+            }
+            throw new InternalServerException(e.getMessage());
         }
-        return ids;
+
     }
 
     public Map<String,Integer> createCustomer(Customer customer) {
-        Map<String,Integer> map = new HashMap<>();
-        // the sql statement naturally returns null if no rows match the query, meaning that if it isn't null, a record with the email already exists
-        if (customerRepository.findCustomerByEmail(customer.getEmail()) != null) {
-            throw new ForbiddenException("Email " + customer.getEmail() + " already exists.");
+        try {
+            Map<String,Integer> map = new HashMap<>();
+            // the sql statement naturally returns null if no rows match the query, meaning that if it isn't null, a record with the email already exists
+            if (customerRepository.findCustomerByEmail(customer.getEmail()) != null) {
+                throw new ForbiddenException("Email " + customer.getEmail() + " already exists.");
+            }
+            if (customer.getPassword().length() < 8) {
+                throw new BadRequestException("Password is to short");
+            }
+            Customer customer1 = customerRepository.save(customer);
+            map.put("customerId", customer1.getCustomerId());
+            return map;
+        }   catch(Exception e){
+            if(e instanceof ForbiddenException){
+                throw e;
+            }
+            if(e instanceof BadRequestException){
+                throw e;
+            }
+            throw new InternalServerException(e.getMessage());
         }
-        if (customer.getPassword().length() < 8) {
-            throw new BadRequestException("Password is to short");
-        }
-        Customer customer1 = customerRepository.save(customer);
-        map.put("customerId", customer1.getCustomerId());
-        return map;
+
     }
 
     public CustomerDTO updateCustomer(int id, Customer updates) {
         try {
+            if(!customerRepository.existsById(id)){
+                throw new NotFoundException("Customer ID provided does not exist.");
+            }
             Customer customer = customerRepository.findById(id).get();
             if (updates.getEmail() != null) {
-                    // checks to see if updated email already exists, if it does throw an exception
+                    // checks to see if update email already exists, if it does throw an exception
                 if(customerRepository.findCustomerByEmail(updates.getEmail()) != null){
-                    throw new BadRequestException("Email already exists");
+                    throw new BadRequestException("Email already exists.");
                 }
                 customer.setEmail(updates.getEmail());
                 // Will update account owner email if the user updates their email
@@ -204,18 +243,30 @@ public class CustomerService {
                     customer.getAccountIDs()
             );
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, null, e);
+            if (e instanceof NotFoundException) {
+                throw e;
+            }
+            if (e instanceof BadRequestException) {
+                throw e;
+            }
+            throw new InternalServerException(e.getMessage());
         }
     }
 
     public Map<String,Integer> deleteCustomer(int id) {
         try {
             Map<String,Integer> map = new HashMap<>();
+            if(!customerRepository.existsById(id)){
+                throw new NotFoundException("Customer ID provided does not exist.");
+            }
             customerRepository.deleteById(id);
             map.put("customerID", id);
             return map;
         } catch (Exception e) {
-            throw new NotFoundException("Customer not found.");
+            if (e instanceof NotFoundException) {
+                throw e;
+            }
+            throw new InternalServerException(e.getMessage());
         }
     }
 }
