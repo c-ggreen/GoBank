@@ -208,10 +208,12 @@ public class CustomerService {
         }
     }
 
-    public HttpStatus deleteCustomer(int id) {
+    public Map<String,Integer> deleteCustomer(int id) {
         try {
+            Map<String,Integer> map = new HashMap<>();
             customerRepository.deleteById(id);
-            return new ResponseStatusException(HttpStatus.OK).getStatus();
+            map.put("customerID", id);
+            return map;
         } catch (Exception e) {
             throw new NotFoundException("Customer not found.");
         }
