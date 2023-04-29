@@ -22,6 +22,6 @@ This project mimics what a banking application would be. It's main goal is to se
     - Started markdown
 
 ## Known Issues
-    - 4/29/2023
-        - Broken client side due to massive server side changes.
+- 4/29/2023
+    - Broken client side due to massive server side changes.
  
