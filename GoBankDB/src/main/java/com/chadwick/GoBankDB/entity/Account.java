@@ -1,4 +1,5 @@
 package com.chadwick.GoBankDB.entity;
+import com.chadwick.GoBankDB.enums.AccountStatus;
 import com.chadwick.GoBankDB.model.Name;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -32,6 +33,8 @@ public class Account {
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private Instant creationDate;
+    @Column(nullable = false)
+    private AccountStatus accountStatus;
     @Column
     @ElementCollection
     private List<Long> transactionIDs; // only storing the transaction id's instead of the full transactions
