@@ -1,4 +1,6 @@
 package com.chadwick.GoBankDB.entity;
+import com.chadwick.GoBankDB.enums.TransactionCategory;
+import com.chadwick.GoBankDB.enums.TransactionType;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
@@ -20,10 +22,9 @@ public class Transaction {
     @Column(nullable = false, updatable = false)
     private String amount;
     @Column(nullable = false, updatable = false)
-    // TODO: should type be an enum?
-    private String type; // Credit or Debit
-    @Column
-    private String category; // Utilities, Food & Drink, Transportation, etc.
+    private TransactionType type; // CREDIT or DEBIT
+    @Column(nullable = false)
+    private TransactionCategory category; // Utilities, Food & Drink, Transportation, etc.
     @Column(nullable = false)
     private long associatedAccountId;
 

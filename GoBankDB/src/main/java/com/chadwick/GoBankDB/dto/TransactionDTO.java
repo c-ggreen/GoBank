@@ -1,5 +1,7 @@
 package com.chadwick.GoBankDB.dto;
 
+import com.chadwick.GoBankDB.enums.TransactionType;
+
 import java.time.Instant;
 
 public record TransactionDTO(
@@ -7,6 +9,6 @@ public record TransactionDTO(
         String description,
         Instant transactionDate,
         String amount,
-        String type
+        TransactionType type
 ) {
 }

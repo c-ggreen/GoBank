@@ -2,13 +2,13 @@ package com.chadwick.GoBankDB.controller;
 
 import com.chadwick.GoBankDB.dto.TransactionDTO;
 import com.chadwick.GoBankDB.entity.Transaction;
+import com.chadwick.GoBankDB.response.ResponseHandler;
 import com.chadwick.GoBankDB.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @CrossOrigin
 @RestController
@@ -23,18 +23,18 @@ public class TransactionController {
     }
 
     @GetMapping("/account")
-    public List<Transaction> getAllAccountTransactions(@RequestParam long associatedAccountId){
-        return transactionService.getAllAccountTransactions(associatedAccountId);
+    public ResponseEntity<Object> getAllAccountTransactions(@RequestParam long associatedAccountId){
+        return ResponseHandler.apiResponse("Transactions with the same associated account returned successfully",transactionService.getAllAccountTransactions(associatedAccountId));
     }
 
-    @GetMapping("/id")
-    public TransactionDTO getTransactionByID(@RequestParam long id){
-        return transactionService.getTransactionByID(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getTransactionByID(@PathVariable long id){
+        return ResponseHandler.apiResponse("Transaction retrieved successfully.", transactionService.getTransactionByID(id));
     }
 
     @PostMapping
-    public long createTransaction(@RequestBody Transaction transaction, @RequestParam long associatedAccountId){
-        return transactionService.createTransaction(transaction, associatedAccountId);
+    public ResponseEntity<Object> createTransaction(@RequestBody Transaction transaction, @RequestParam long associatedAccountId){
+        return ResponseHandler.apiResponse("Transaction created successfully.", transactionService.createTransaction(transaction, associatedAccountId));
     }
 // Transactions shouldn't be updatable
 //    @PatchMapping
@@ -42,8 +42,8 @@ public class TransactionController {
 //        return transactionService.updateTransaction(transaction);
 //    }
 
-    @DeleteMapping
-    public HttpStatus deleteTransaction(@RequestParam long id){
-        return transactionService.deleteTransaction(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteTransaction(@PathVariable long id){
+        return ResponseHandler.apiResponse("Transaction deleted successfully.",transactionService.deleteTransaction(id));
     }
 }

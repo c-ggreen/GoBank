@@ -11,6 +11,8 @@ import com.chadwick.GoBankDB.repository.AccountRepository;
 import com.chadwick.GoBankDB.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +40,7 @@ public class AccountService {
                     acc.getAccountOwnerName(),
                     acc.getBalance(),
                     acc.getAccountStatus(),
+                    acc.getType(),
                     acc.getTransactionIDs()
             );
         } catch (Exception e){
@@ -48,35 +51,46 @@ public class AccountService {
         }
     }
 
-    public List<Account> getAccountsByOwnerId(int accountOwnerId){
+    public List<AccountDTO> getAccountsByOwnerId(int accountOwnerId){
         try{
-            return accountRepository.findAccountsByOwnerId(accountOwnerId);
+            List<AccountDTO> accountDTO = new ArrayList<>();
+            List<Account> accounts = accountRepository.findAccountsByOwnerId(accountOwnerId);
+            for (Account acc : accounts) {
+                accountDTO.add(
+                        new AccountDTO(
+                            acc.getAccountId(),
+                            acc.getAccountOwnerId(),
+                            acc.getAccountOwnerName(),
+                            acc.getBalance(),
+                            acc.getAccountStatus(),
+                            acc.getType(),
+                            acc.getTransactionIDs()
+                        )
+                );
+            }
+            return accountDTO;
         } catch (Exception e){
             throw new InternalServerException(e.getMessage());
         }
     }
 
-    public AccountDTO createAccount(Account account, int accountOwnerID){
+    public Map<String, Long> createAccount(Account account, int accountOwnerID){
         try{
+            Map<String, Long> map = new HashMap<>();
             // when creating a new account, the customer ID is taken in to add to the account object and is used to query the customer to then add the account id to the list in the customer entity
             account.setAccountOwnerId(accountOwnerID);
-            Account acc = accountRepository.save(account);
             if (!customerRepository.existsById(accountOwnerID)){
                 throw new NotFoundException("Account owner ID " + accountOwnerID + " not found");
             }
             Customer customer = customerRepository.findById(accountOwnerID).get();
+            account.setAccountOwnerName(customer.getName()); // setting the account owner name field from the queried customer entity
+            Account acc = accountRepository.save(account);
             List<Long> accountIDs = customer.getAccountIDs();
             accountIDs.add(acc.getAccountId());
             customer.setAccountIDs(accountIDs);
             customerRepository.save(customer);
-            return new AccountDTO(
-                    acc.getAccountId(),
-                    acc.getAccountOwnerId(),
-                    acc.getAccountOwnerName(),
-                    acc.getBalance(),
-                    acc.getAccountStatus(),
-                    acc.getTransactionIDs()
-            );
+            map.put("accountID",acc.getAccountId());
+            return map;
         } catch (Exception e) {
             if(e instanceof NotFoundException){
                 throw e;
