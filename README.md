@@ -3,7 +3,8 @@ This project mimics what a banking application would be. It's main goal is to se
 
 ## Planned Features or Changes
 - 4/29/2023
-    - Introduce a Loan type to the application.
+    - Refactor entire client side to typescript.
+    - Introduce Loans to the application.
 - 4/28/2023
     - ~Accounts shouldn't be permanently deleted. Instead they should have a status of OPEN, HOLD, or CLOSED. That way they can be deleted from a Customer's existing list, but we can retain the account info for future use.~
 
@@ -21,4 +22,6 @@ This project mimics what a banking application would be. It's main goal is to se
     - Started markdown
 
 ## Known Issues
+    - 4/29/2023
+        - Broken client side due to massive server side changes.
  
