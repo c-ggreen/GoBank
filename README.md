@@ -11,7 +11,7 @@ This project mimics what a banking application would be. It's main goal is to se
 - 4/29/2023
     - Added Transaction Type and Category enums to server code
     - Added Account Type enums to server code
-    - Updated error handling and API Response for Account Service/Controller
+    - Updated error handling and API Response for Transaction Service/Controller
     - No longer need to send accountOwnerName in body of Account POST, automatically populates from ID passed in parameters
 - 4/28/2023
     - Added an Account Status enum to server code
